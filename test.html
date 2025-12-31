@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>USAHADULU STUDIO | Digital Creative Services</title>
+    <meta name="description" content="Jasa Desain Grafis Underground, Logo, Apparel, Motion Graphic dan Web Invitation di Dumai. Estetika Streetwear & Dark Arts.">
+    <meta name="keywords" content="Desain Grafis Dumai, Jasa Logo Metal, Streetwear Design, Web Undangan, Video Editing, Magos Streetwear, Jasa Desain Kaos">
+    <meta name="author" content="Fajri Salam">
+    <meta name="theme-color" content="#000000">
+    
+    <meta property="og:title" content="USAHADULU STUDIO - Digital Creative Services">
+    <meta property="og:description" content="Visual Solution for Underground & Streetwear Brands.">
+    <meta property="og:image" content="logo_ambigram.png">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="logo_web.png">
+    <link rel="apple-touch-icon" href="logo_web.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+   <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="cursor"></div>
+
+    <div id="preloader">
+        <img src="logo_ambigram.png" alt="Loading..." class="loader-logo">
+    </div>
+
+    <a href="#" id="waFloatBtn" target="_blank" class="float-wa hover-target">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+    </a>
+
+    <header id="mainHeader">
+        <div class="header-left">
+            <div class="brand-logo hover-target">
+                <img id="headerLogoImg" src="logo_ambigram.png" alt="USAHADULU.COM">
+            </div>
+        </div>
+
+        <div style="display:flex; align-items:center;">
+            <div class="lang-switch hover-target" id="langToggle" data-lang="id" onclick="toggleLanguage()">
+                <div class="lang-circle"></div>
+            </div>
+
+            <div class="menu-btn hover-target" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-overlay" id="navOverlay">
+        <ul class="menu-list">
+            
+            <li class="menu-item" id="serviceMenu">
+                <div class="menu-title hover-target" onclick="toggleAccordion('serviceMenu')" data-i18n="nav_services">SERVICES</div>
+                <div class="accordion-content">
+                    <ul id="dynamicServiceList">
+                        </ul>
+                </div>
+            </li>
+
+            <li class="menu-item">
+                <div class="menu-title hover-target" onclick="openPortfolioModal()" data-i18n="nav_portfolio">PORTFOLIO</div>
+            </li>
+            
+            <li class="menu-item">
+                <div class="menu-title hover-target" onclick="openPaymentModal()" data-i18n="nav_payment">PAYMENT METHODS</div>
+            </li>
+
+            <li class="menu-item">
+                <div class="menu-title hover-target" onclick="openTestimonialModal()" data-i18n="nav_testimonials">CLIENTS & TESTIMONIALS</div>
+            </li>
+
+            <li class="menu-item" id="faqMenu">
+                <div class="menu-title hover-target" onclick="toggleAccordion('faqMenu')" data-i18n="nav_faq">Q&A / FAQ</div>
+                <div class="accordion-content">
+                    <div class="faq-wrapper" id="faqContent">
+                        </div>
+                </div>
+            </li>
+
+            <li class="menu-item">
+                <a href="https://arie96s.github.io/magosstreetwear" target="_blank" class="menu-title hover-target close-menu-link">MAGOS STREETWEAR</a>
+            </li>
+
+            <li class="menu-item" id="contactMenu">
+                <div class="menu-title hover-target" onclick="toggleAccordion('contactMenu')" data-i18n="nav_contact">CONTACT US</div>
+                <div class="accordion-content social-links">
+                    <ul>
+                        <li><a href="https://www.instagram.com/arie96s" target="_blank" class="hover-target close-menu-link">INSTAGRAM</a></li>
+                        <li><a href="https://www.youtube.com/@arie96s" target="_blank" class="hover-target close-menu-link">YOUTUBE</a></li>
+                        <li><a href="https://wa.me/6282283687565" target="_blank" class="hover-target close-menu-link">WHATSAPP</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="menu-item">
+                <div class="menu-title hover-target" onclick="openAboutModal()" data-i18n="nav_about">ABOUT</div>
+            </li>
+
+        </ul>
+    </div>
+
+    <section class="hero">
+        <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1920&auto=format&fit=crop');"></div>
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1920&auto=format&fit=crop');"></div>
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1920&auto=format&fit=crop');"></div>
+        
+        <div class="hero-content">
+            <img src="logo_web.png" alt="USAHADULU LOGO" class="hero-logo-img">
+            <p data-i18n="hero_tagline">SOLUSI VISUAL PROFESIONAL UNTUK IDENTITAS BRAND ANDA</p>
+            <button class="cta-btn hover-target" onclick="openServicesFromHero()" data-i18n="hero_cta">START PROJECT</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="copyright">&copy; 2023-2025 USAHADULU.COM. All Rights Reserved.</div>
+    </footer>
+
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="close-modal hover-target" onclick="closeModal('orderModal')">&times;</div>
+            <h3 id="orderTitle" style="margin-bottom:20px;">ORDER SERVICE</h3>
+            <a id="btnWA" href="#" target="_blank" class="order-btn whatsapp hover-target">Via WhatsApp</a>
+            <a id="btnIG" href="https://instagram.com/arie96s" target="_blank" class="order-btn instagram hover-target">Via DM Instagram</a>
+        </div>
+    </div>
+
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <div class="close-modal hover-target" onclick="closeModal('aboutModal')">&times;</div>
+            <h3 data-i18n="about_title">ABOUT US</h3>
+            <p id="aboutText" style="line-height: 1.6; color: #ccc; margin-top: 15px;">
+                <strong>USAHADULU.COM</strong> adalah entitas kreatif yang bergerak di bidang visual digital. Fokus pada estetika underground, streetwear, dark arts, dan desain fungsional. Kami berbasis di Dumai.
+            </p>
+            <br>
+            <p style="color: #666; font-size: 12px;">DUMAI, RIAU, INDONESIA.</p>
+        </div>
+    </div>
+
+    <div class="modal" id="paymentModal">
+        <div class="modal-content portfolio-content">
+            <div class="close-modal hover-target" onclick="closeModal('paymentModal')">&times;</div>
+            <div class="modal-title" data-i18n="payment_title">METODE PEMBAYARAN</div>
+            
+            <div class="portfolio-scroll-area">
+                <div class="payment-list-container" id="paymentList"></div>
+                
+                <div class="payment-instruction">
+                    <strong data-i18n="pay_instruct_title">INSTRUKSI KONFIRMASI:</strong>
+                    <span data-i18n="pay_instruct_text">
+                        Harap melakukan konfirmasi pembayaran dengan melampirkan bukti transfer melalui WhatsApp resmi kami untuk mempercepat proses verifikasi pesanan Anda.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="portfolioModal">
+        <div class="modal-content portfolio-content">
+            <div class="close-modal hover-target" onclick="closeModal('portfolioModal')">&times;</div>
+            <div class="modal-title" data-i18n="portfolio_title">PORTFOLIO</div>
+            <div class="filter-container" id="filterContainer"></div>
+            <div class="portfolio-scroll-area">
+                <div class="portfolio-grid" id="portfolioGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="testimonialModal">
+        <div class="modal-content portfolio-content">
+            <div class="close-modal hover-target" onclick="closeModal('testimonialModal')">&times;</div>
+            <div class="modal-title" data-i18n="nav_testimonials">CLIENTS & REVIEWS</div>
+            
+            <div class="portfolio-scroll-area">
+                <div class="review-input-section">
+                    <span style="font-size:12px; color:#888; letter-spacing:1px; text-transform:uppercase;">BERIKAN PENILAIAN ANDA</span>
+                    <div class="star-rating-container" id="starRatingContainer">
+                        <span class="star-icon hover-target" data-val="1">★</span>
+                        <span class="star-icon hover-target" data-val="2">★</span>
+                        <span class="star-icon hover-target" data-val="3">★</span>
+                        <span class="star-icon hover-target" data-val="4">★</span>
+                        <span class="star-icon hover-target" data-val="5">★</span>
+                    </div>
+
+                    <div class="review-form-container" id="reviewFormContainer">
+                        <input type="text" id="reviewName" class="review-input hover-target" placeholder="Nama Anda (Cth: Budi - Distro X)" required>
+                        <input type="text" id="reviewType" class="review-input hover-target" placeholder="Jenis Order (Cth: Logo Design)" required>
+                        <textarea id="reviewComment" class="review-input hover-target" rows="3" placeholder="Tulis pengalaman Anda..." maxlength="150" oninput="updateCharCount()"></textarea>
+                        <span id="charCount" class="char-counter">0 / 150</span>
+                        <button class="submit-review-btn hover-target" onclick="submitReview()">KIRIM ULASAN</button>
+                    </div>
+                </div>
+
+                <div class="testimonial-grid" id="testimonialGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="lightboxModal">
+        <div class="close-modal hover-target" onclick="closeLightboxOnly()">&times;</div>
+        <div class="modal-content-lightbox">
+            <div id="lightboxTitle">DESIGN TITLE</div>
+            <img src="logo_ambigram.png" alt="Loading..." id="lightboxLoader" class="loader-logo">
+            <img id="lightboxImg" src="" alt="Full View">
+        </div>
+    </div>
+
+    <script>
+        // --- 0. KONFIGURASI UMUM ---
+        const appConfig = {
+            useLocalImages: false,
+            localPath: 'img/',
+        };
+
+        // --- 1. DATA STRUCTURE ---
+        const siteData = {
+            currentLang: 'id',
+            translations: {
+                id: {
+                    nav_services: "LAYANAN",
+                    nav_portfolio: "PORTOFOLIO",
+                    nav_testimonials: "KLIEN & TESTIMONI",
+                    nav_contact: "KONTAK",
+                    nav_about: "TENTANG",
+                    nav_faq: "TANYA JAWAB (FAQ)",
+                    nav_payment: "METODE PEMBAYARAN",
+                    hero_cta: "MULAI PROYEK",
+                    hero_tagline: "SOLUSI VISUAL PROFESIONAL UNTUK IDENTITAS BRAND ANDA",
+                    about_title: "TENTANG KAMI",
+                    payment_title: "METODE PEMBAYARAN",
+                    pay_instruct_title: "INSTRUKSI KONFIRMASI:",
+                    pay_instruct_text: "Harap melakukan konfirmasi pembayaran dengan melampirkan bukti transfer melalui WhatsApp resmi kami untuk mempercepat proses verifikasi pesanan Anda.",
+                    about_desc: "<strong>USAHADULU.COM</strong> adalah entitas kreatif yang bergerak di bidang visual digital. Fokus pada estetika underground, streetwear, dark arts, dan desain fungsional. Kami berbasis di Dumai.",
+                    portfolio_title: "KARYA KAMI",
+                    order_prefix: "Halo Admin USAHADULU, saya tertarik order ",
+                    filter_all: "SEMUA",
+                    price_start: "Mulai",
+                    btn_order_now: "PESAN SEKARANG"
+                },
+                en: {
+                    nav_services: "SERVICES",
+                    nav_portfolio: "PORTFOLIO",
+                    nav_testimonials: "CLIENTS & REVIEWS",
+                    nav_contact: "CONTACT",
+                    nav_about: "ABOUT",
+                    nav_faq: "FAQ / Q&A",
+                    nav_payment: "PAYMENT METHODS",
+                    hero_cta: "START PROJECT",
+                    hero_tagline: "PROFESSIONAL VISUAL SOLUTIONS FOR YOUR BRAND IDENTITY",
+                    about_title: "ABOUT US",
+                    payment_title: "PAYMENT METHODS",
+                    pay_instruct_title: "CONFIRMATION INSTRUCTION:",
+                    pay_instruct_text: "Please confirm your payment by attaching the transfer receipt via our official WhatsApp to expedite your order verification process.",
+                    about_desc: "<strong>USAHADULU.COM</strong> is a creative entity specializing in digital visuals. Focused on underground aesthetics, streetwear, dark arts, and functional design. Based in Dumai City.",
+                    portfolio_title: "OUR WORK",
+                    order_prefix: "Hello Admin USAHADULU, I'm interested in ordering ",
+                    filter_all: "ALL",
+                    price_start: "Start from",
+                    btn_order_now: "ORDER NOW"
+                }
+            },
+            faq: [
+                {
+                    q_id: "Berapa lama proses pengerjaan?",
+                    a_id: "Estimasi 3-7 hari kerja tergantung antrian dan tingkat kesulitan. Prioritas pengerjaan tersedia dengan biaya tambahan.",
+                    q_en: "How long does the process take?",
+                    a_en: "Estimated 3-7 working days depending on queue and complexity. Priority service available with extra charge."
+                },
+                {
+                    q_id: "Apakah ada revisi?",
+                    a_id: "Kami memberikan 2x sesi revisi minor (perubahan warna/font) gratis. Revisi konsep total dikenakan biaya baru.",
+                    q_en: "Are revisions included?",
+                    a_en: "We provide 2x free minor revision sessions (color/font tweaks). Total concept revision requires a new fee."
+                },
+                {
+                    q_id: "File apa yang saya dapatkan?",
+                    a_id: "Anda akan mendapatkan file High-Res (JPG/PNG) dan File Master (AI/PSD/EPS) sesuai paket yang diambil.",
+                    q_en: "What files will I get?",
+                    a_en: "You will receive High-Res files (JPG/PNG) and Master Files (AI/PSD/EPS) according to the selected package."
+                },
+                {
+                    q_id: "Sistem Pembayaran?",
+                    a_id: "Wajib DP 50% di awal. Pelunasan dilakukan setelah preview desain disetujui, sebelum pengiriman file master.",
+                    q_en: "Payment System?",
+                    a_en: "50% Down Payment required upfront. Full payment is made after design preview approval, before master file delivery."
+                }
+            ],
+            services: [
+                { 
+                    id: 'logo', 
+                    name_id: "LOGO & BRANDING", 
+                    name_en: "LOGO & BRANDING", 
+                    price: "IDR 250K",
+                    desc_id: "Pembuatan identitas visual yang kuat. Cocok untuk brand baru yang ingin tampil beda.",
+                    desc_en: "Strong visual identity creation. Perfect for new brands wanting to stand out.",
+                    packages: [
+                        { item: "Basic (Logo Only)", price: "250K" },
+                        { item: "Standard (Logo + Mockup)", price: "450K" },
+                        { item: "Pro (Full Branding Kit)", price: "800K" },
+                        { item: "Re-drawing Vector", price: "150K" }
+                    ]
+                },
+                { 
+                    id: 'apparel', 
+                    name_id: "DESAIN KAOS/APPAREL", 
+                    name_en: "APPAREL/T-SHIRT DESIGN", 
+                    price: "IDR 150K",
+                    desc_id: "Desain ilustrasi untuk merchandise, kaos band, streetwear, dan clothing line.",
+                    desc_en: "Illustration design for merchandise, band tees, streetwear, and clothing lines.",
+                    packages: [
+                        { item: "Typography Design", price: "150K" },
+                        { item: "Simple Illustration", price: "300K" },
+                        { item: "Detailed / Metal Artwork", price: "600K" },
+                        { item: "Full Merch Pack (F/B/S)", price: "850K" }
+                    ]
+                },
+                { 
+                    id: 'flyer', 
+                    name_id: "DESAIN POSTER/FLYER", 
+                    name_en: "FLYER/POSTER DESIGN", 
+                    price: "IDR 100K",
+                    desc_id: "Media promosi digital untuk event, gig musik, atau promo produk di sosial media.",
+                    desc_en: "Digital promotional media for events, music gigs, or product promos on social media.",
+                    packages: [
+                        { item: "Instagram Feed/Story", price: "100K" },
+                        { item: "Event Poster A3", price: "200K" },
+                        { item: "Menu Design (1 Page)", price: "250K" },
+                        { item: "Banner / Billboard", price: "300K" }
+                    ]
+                },
+                { 
+                    id: 'web', 
+                    name_id: "WEB UNDANGAN DIGITAL", 
+                    name_en: "WEB INVITATION", 
+                    price: "IDR 300K",
+                    desc_id: "Undangan berbasis website yang elegan, modern, dan mudah disebarkan.",
+                    desc_en: "Elegant, modern, and easily shareable website-based invitations.",
+                    packages: [
+                        { item: "Basic Template", price: "300K" },
+                        { item: "Custom Theme", price: "600K" },
+                        { item: "Exclusive Domain (.com)", price: "+200K" },
+                        { item: "Prioritas Pengerjaan", price: "+100K" }
+                    ]
+                },
+                { 
+                    id: 'video', 
+                    name_id: "VIDEO & MOTION GRAPHIC", 
+                    name_en: "VIDEO & MOTION GRAPHIC", 
+                    price: "IDR 200K",
+                    desc_id: "Editing video kreatif untuk Reels, TikTok, atau intro YouTube yang dinamis.",
+                    desc_en: "Creative video editing for Reels, TikTok, or dynamic YouTube intros.",
+                    packages: [
+                        { item: "Simple Cut/Edit (1 min)", price: "200K" },
+                        { item: "Motion Graphic Intro", price: "350K" },
+                        { item: "Lyric Video", price: "500K" },
+                        { item: "Teaser Event", price: "400K" }
+                    ]
+                }
+            ],
+            
+            portfolio: [
+                { category: 'logo', title: 'NEON CYBERPUNK LOGO', fileName: 'logo_cyberpunk.jpg', demoUrl: 'https://images.unsplash.com/photo-1571120038865-c35012e1284a?auto=format&fit=crop&w=500&q=60' },
+                { category: 'apparel', title: 'MAGOS STREETWEAR V1', fileName: 'magos_v1.jpg', demoUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=60' },
+                { category: 'flyer', title: 'METAL BAND POSTER', fileName: 'poster_metal.jpg', demoUrl: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=500&q=60' },
+                { category: 'art', title: 'DARK ARTS ILLUSTRATION', fileName: 'dark_art.jpg', demoUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=60' },
+                { category: 'logo', title: 'VINTAGE TYPOGRAPHY', fileName: 'logo_vintage.jpg', demoUrl: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=500&q=60' },
+                { category: 'web', title: 'RETRO WAVE WEBSITE', fileName: 'web_retro.jpg', demoUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=60' },
+                { category: 'video', title: 'URBAN VLOG INTRO', fileName: 'video_vlog.jpg', demoUrl: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=500&q=60' },
+                { category: 'flyer', title: 'EVENT FLYER DUMAI', fileName: 'flyer_dumai.jpg', demoUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=60' },
+                { category: 'apparel', title: 'GOTHIC MERCHANDISE', fileName: 'merch_gothic.jpg', demoUrl: 'https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?auto=format&fit=crop&w=500&q=60' },
+                { category: 'video', title: 'ABSTRACT MOTION', fileName: 'video_abstract.jpg', demoUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=500&q=60' },
+                { category: 'web', title: 'WEDDING INVITATION', fileName: 'web_wedding.jpg', demoUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=500&q=60' }
+            ],
+            filters: ['logo', 'apparel', 'web', 'video', 'flyer'],
+            testimonials: [
+                { name: "Doni Pratama", brand: "Iron Soul Band", quote: "Desain artwork untuk album band kami sakit banget! Detailnya gila, vibe dark-nya dapet banget." },
+                { name: "Siska Wijaya", brand: "Cafe Senja Dumai", quote: "Pengerjaan logo dan daftar menu sangat cepat. Revisi dilayani dengan ramah sampai sesuai keinginan." },
+                { name: "Rian Ardiansyah", brand: "Street Rebels", quote: "Sudah 3x order desain kaos di sini. Selalu puas sama hasilnya. Konsep metalnya orisinil." },
+                { name: "Putri Anggraini", brand: "Wedding Client", quote: "Undangan digitalnya elegan dan smooth banget animasinya. Tamu-tamu pada suka!" }
+            ],
+            payments: [
+                { cat: "BANK HIMBARA (STATE-OWNED)", type: "MANDIRI", number: "108-000-xxxx-xxx", holder: "Ariezona Creative" },
+                { cat: "BANK HIMBARA (STATE-OWNED)", type: "BRI", number: "5371-01-xxxxxx-53-x", holder: "Ariezona Creative" },
+                { cat: "BANK HIMBARA (STATE-OWNED)", type: "BNI", number: "098-xxxx-xxx", holder: "Ariezona Creative" },
+                { cat: "PRIVATE BANK (CONVENTIONAL)", type: "BCA", number: "8000-xxxx-xx", holder: "Ariezona Creative" },
+                { cat: "DIGITAL BANK", type: "BANK JAGO", number: "1092-xxxx-xxxx", holder: "Ariezona Creative" },
+                { cat: "DIGITAL BANK", type: "SEABANK", number: "9019-xxxx-xxxx", holder: "Ariezona Creative" },
+                { cat: "E-WALLET", type: "DANA", number: "0822-8368-7565", holder: "Ariezona Creative" },
+                { cat: "E-WALLET", type: "GOPAY", number: "0822-8368-7565", holder: "Ariezona Creative" },
+                { cat: "E-WALLET", type: "OVO", number: "0822-8368-7565", holder: "Ariezona Creative" },
+                { cat: "E-WALLET", type: "SHOPEEPAY", number: "0822-8368-7565", holder: "Ariezona Creative" },
+                { cat: "QRIS", type: "ALL PAYMENT", number: "SCAN", holder: "Ariezona Creative" },
+                { cat: "INTERNATIONAL", type: "PAYPAL", number: "paypal.me/arie96s", holder: "Ariezona Creative" }
+            ]
+        };
+
+        // --- 2. INITIALIZATION ---
+        function initSite() {
+            renderServices();
+            renderFAQ();
+            renderPortfolio('all');
+            renderFilters();
+            renderTestimonials(); 
+            renderPayments(); 
+            updateWALinks();
+            setupExternalLinks();
+            setupReviewStars(); // Init Review System
+        }
+
+        function toggleLanguage() {
+            siteData.currentLang = siteData.currentLang === 'id' ? 'en' : 'id';
+            const toggleBtn = document.getElementById('langToggle');
+            toggleBtn.setAttribute('data-lang', siteData.currentLang);
+            updateLanguageUI();
+            renderServices();
+            renderFAQ();
+            renderFilters(); 
+            renderPayments();
+            updateWALinks();
+        }
+
+        function updateLanguageUI() {
+            const lang = siteData.currentLang;
+            const t = siteData.translations[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerHTML = t[key];
+            });
+            document.getElementById('aboutText').innerHTML = t.about_desc;
+        }
+
+        function updateWALinks() {
+            const lang = siteData.currentLang;
+            const phone = "6282283687565";
+            const msg = encodeURIComponent(lang === 'id' ? "Halo, saya ingin bertanya jasa desain." : "Hello, I want to ask about design services.");
+            document.getElementById('waFloatBtn').href = `https://wa.me/${phone}?text=${msg}`;
+        }
+
+        function renderFAQ() {
+            const container = document.getElementById('faqContent');
+            container.innerHTML = '';
+            const lang = siteData.currentLang;
+            siteData.faq.forEach(item => {
+                const q = lang === 'id' ? item.q_id : item.q_en;
+                const a = lang === 'id' ? item.a_id : item.a_en;
+                const div = document.createElement('div');
+                div.className = 'faq-item';
+                div.innerHTML = `<span class="faq-q">${q}</span><span class="faq-a">${a}</span>`;
+                container.appendChild(div);
+            });
+        }
+
+        function renderServices() {
+            const container = document.getElementById('dynamicServiceList');
+            container.innerHTML = '';
+            const lang = siteData.currentLang;
+            const t = siteData.translations[lang];
+            siteData.services.forEach(svc => {
+                const name = lang === 'id' ? svc.name_id : svc.name_en;
+                const desc = lang === 'id' ? svc.desc_id : svc.desc_en;
+                let tableRows = '';
+                svc.packages.forEach(pkg => { tableRows += `<tr><td>${pkg.item}</td><td>${pkg.price}</td></tr>`; });
+                const li = document.createElement('li');
+                li.className = 'service-wrapper';
+                li.innerHTML = `
+                    <div class="service-header hover-target" onclick="toggleServiceItem(this)">
+                        <span class="service-name-main">${name}</span>
+                        <span class="service-icon-state">▼</span>
+                    </div>
+                    <div class="service-body">
+                        <p class="service-desc">${desc}</p>
+                        <table class="price-table">${tableRows}</table>
+                        <div class="service-btn-wrapper">
+                            <button class="service-action-btn hover-target" onclick="openOrderPopup('${name}')">${t.btn_order_now}</button>
+                        </div>
+                    </div>`;
+                container.appendChild(li);
+            });
+            bindHoverEvents();
+        }
+
+        function renderPayments() {
+            const container = document.getElementById('paymentList');
+            container.innerHTML = '';
+            
+            // Group by Category
+            const categories = {};
+            siteData.payments.forEach(pay => {
+                if (!categories[pay.cat]) categories[pay.cat] = [];
+                categories[pay.cat].push(pay);
+            });
+
+            for (const [catName, items] of Object.entries(categories)) {
+                const catDiv = document.createElement('div');
+                catDiv.className = 'payment-category';
+                
+                let itemsHtml = '';
+                items.forEach(item => {
+                    if (item.cat === 'QRIS') {
+                        itemsHtml += `
+                            <div class="qris-wrapper">
+                                <div class="qris-placeholder">QR CODE</div>
+                                <span style="font-size:12px; font-weight:bold; color:#000; display:block; margin-top:10px;">SCAN QRIS</span>
+                            </div>
+                        `;
+                    } else {
+                        itemsHtml += `
+                            <div class="payment-item hover-target">
+                                <div class="bank-info">
+                                    <span class="bank-name">${item.type}</span>
+                                    <span class="bank-number">${item.number}</span>
+                                    <span class="bank-holder">A.N ${item.holder}</span>
+                                </div>
+                                <button class="copy-btn hover-target" onclick="copyText('${item.number}')">COPY</button>
+                            </div>
+                        `;
+                    }
+                });
+
+                catDiv.innerHTML = `
+                    <div class="payment-cat-header hover-target" onclick="togglePaymentCategory(this)">
+                        <span class="payment-cat-title">${catName}</span>
+                        <span class="payment-cat-icon">▼</span>
+                    </div>
+                    <div class="payment-cat-body">
+                        ${itemsHtml}
+                    </div>
+                `;
+                container.appendChild(catDiv);
+            }
+            bindHoverEvents();
+        }
+
+        function togglePaymentCategory(header) {
+            header.classList.toggle('active');
+            const body = header.nextElementSibling;
+            if (header.classList.contains('active')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = null;
+            }
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Copied: " + text);
+            });
+        }
+
+        function toggleServiceItem(headerElement) {
+            headerElement.classList.toggle('active');
+            const body = headerElement.nextElementSibling;
+            if (headerElement.classList.contains('active')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = null;
+            }
+            updateParentAccordion();
+            setTimeout(updateParentAccordion, 600);
+        }
+
+        function updateParentAccordion() {
+            const parentContent = document.getElementById('serviceMenu').querySelector('.accordion-content');
+            if (parentContent.style.maxHeight && parentContent.style.maxHeight !== '0px') {
+                parentContent.style.maxHeight = parentContent.scrollHeight + "px";
+            }
+        }
+
+        function toggleAccordion(id) {
+            const item = document.getElementById(id);
+            const content = item.querySelector('.accordion-content');
+            const allContent = document.querySelectorAll('.accordion-content');
+            allContent.forEach(el => { if (el !== content) el.style.maxHeight = null; });
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+
+        function renderFilters() {
+            const container = document.getElementById('filterContainer');
+            container.innerHTML = '';
+            const lang = siteData.currentLang;
+            const t = siteData.translations[lang];
+            const allBtn = document.createElement('button');
+            allBtn.className = 'filter-btn hover-target active';
+            allBtn.innerText = t.filter_all;
+            allBtn.onclick = (e) => handleFilterClick(e, 'all');
+            container.appendChild(allBtn);
+            siteData.filters.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn hover-target';
+                btn.innerText = cat.toUpperCase();
+                btn.onclick = (e) => handleFilterClick(e, cat);
+                container.appendChild(btn);
+            });
+            bindHoverEvents();
+        }
+
+        function handleFilterClick(e, category) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            renderPortfolio(category);
+        }
+
+        function renderPortfolio(filterCategory) {
+            const grid = document.getElementById('portfolioGrid');
+            grid.innerHTML = '';
+            const items = filterCategory === 'all' ? siteData.portfolio : siteData.portfolio.filter(item => item.category === filterCategory);
+            if (items.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#666;">No items found.</p>';
+                return;
+            }
+            items.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'portfolio-item hover-target';
+                div.style.animationDelay = `${index * 0.1}s`;
+                let finalSrc = appConfig.useLocalImages ? appConfig.localPath + item.fileName : item.demoUrl;
+                div.onclick = () => openLightbox(finalSrc, item.title);
+                div.innerHTML = `<img src="${finalSrc}" alt="${item.title}" loading="lazy" width="500" height="500"><div class="portfolio-tag">${item.category.toUpperCase()}</div>`;
+                grid.appendChild(div);
+            });
+            bindHoverEvents();
+        }
+
+        function renderTestimonials() {
+            const grid = document.getElementById('testimonialGrid');
+            grid.innerHTML = '';
+            siteData.testimonials.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'testi-card';
+                div.innerHTML = `
+                    <div class="testi-quote">${t.quote}</div>
+                    <span class="testi-author">${t.name}</span>
+                    <span class="testi-brand">${t.brand}</span>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        /* --- REVIEW SYSTEM LOGIC (NEW) --- */
+        let currentRating = 0;
+
+        function setupReviewStars() {
+            const stars = document.querySelectorAll('.star-icon');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const val = parseInt(this.getAttribute('data-val'));
+                    currentRating = val;
+                    
+                    // Highlight stars
+                    stars.forEach(s => {
+                        const sVal = parseInt(s.getAttribute('data-val'));
+                        if (sVal <= val) s.classList.add('active');
+                        else s.classList.remove('active');
+                    });
+
+                    // Show Form
+                    document.getElementById('reviewFormContainer').style.display = 'block';
+                });
+            });
+        }
+
+        function updateCharCount() {
+            const input = document.getElementById('reviewComment');
+            const countSpan = document.getElementById('charCount');
+            countSpan.innerText = `${input.value.length} / 150`;
+        }
+
+        function submitReview() {
+            const name = document.getElementById('reviewName').value;
+            const type = document.getElementById('reviewType').value;
+            const comment = document.getElementById('reviewComment').value;
+
+            if (!name || !type || !comment) {
+                alert("Harap isi semua kolom ulasan.");
+                return;
+            }
+
+            // Create WhatsApp Message for Review
+            const stars = "★".repeat(currentRating);
+            const msg = `Halo Admin, saya ingin mengirim ulasan:%0A%0A` +
+                        `*Rating:* ${stars} (${currentRating}/5)%0A` +
+                        `*Nama:* ${name}%0A` +
+                        `*Order:* ${type}%0A` +
+                        `*Ulasan:* "${comment}"`;
+            
+            window.open(`https://wa.me/6282283687565?text=${msg}`, '_blank');
+        }
+
+
+        const cursor = document.getElementById('cursor');
+        function bindHoverEvents() {
+            const hoverTargets = document.querySelectorAll('.hover-target, a, .menu-title, .close-modal, .order-btn, .service-action-btn, .page-num, .cta-btn, .float-wa, .portfolio-item, .lang-switch, .testi-card, .payment-cat-header, .payment-item, .copy-btn, .star-icon, .review-input, .submit-review-btn');
+            hoverTargets.forEach(target => {
+                target.removeEventListener('mouseenter', null); 
+                target.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        const menuBtn = document.getElementById('menuBtn');
+        const navOverlay = document.getElementById('navOverlay');
+        const mainHeader = document.getElementById('mainHeader');
+        
+        // MODIFIKASI: LOGIC GANTI LOGO SAAT MENU BUKA/TUTUP
+        function toggleMenu() {
+            menuBtn.classList.toggle('active');
+            navOverlay.classList.toggle('open');
+            mainHeader.classList.toggle('menu-active');
+            document.body.classList.toggle('no-scroll');
+            
+            const logoImg = document.getElementById('headerLogoImg');
+            
+            // Logic: Jika menu TERBUKA -> Ganti ke logo_web.png
+            // Jika menu TERTUTUP -> Kembali ke logo_ambigram.png
+            if (navOverlay.classList.contains('open')) {
+                logoImg.src = 'logo_web.png';
+            } else {
+                logoImg.src = 'logo_ambigram.png';
+            }
+        }
+
+        function closeMenu() {
+            menuBtn.classList.remove('active');
+            navOverlay.classList.remove('open');
+            mainHeader.classList.remove('menu-active');
+            document.body.classList.remove('no-scroll');
+            // Reset logo to default (ambigram)
+            document.getElementById('headerLogoImg').src = 'logo_ambigram.png';
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        function setupExternalLinks() {
+            document.querySelectorAll('.close-menu-link').forEach(link => { link.addEventListener('click', closeMenu); });
+        }
+
+        function openOrderPopup(serviceName) {
+            document.getElementById('orderTitle').innerText = "ORDER: " + serviceName;
+            const lang = siteData.currentLang;
+            const prefix = siteData.translations[lang].order_prefix;
+            const message = encodeURIComponent(`${prefix}${serviceName}.`);
+            document.getElementById('btnWA').href = `https://wa.me/6282283687565?text=${message}`;
+            closeMenu();
+            document.getElementById('orderModal').classList.add('show');
+        }
+
+        function openPortfolioModal() {
+            renderPortfolio('all');
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.filter-btn').classList.add('active');
+            closeMenu();
+            document.getElementById('portfolioModal').classList.add('show');
+        }
+
+        function openPaymentModal() {
+            closeMenu();
+            renderPayments(); 
+            document.getElementById('paymentModal').classList.add('show');
+        }
+
+        function openTestimonialModal() {
+            closeMenu();
+            document.getElementById('testimonialModal').classList.add('show');
+        }
+
+        function openAboutModal() {
+            closeMenu();
+            document.getElementById('aboutModal').classList.add('show');
+        }
+
+        function openServicesFromHero() {
+            if (!navOverlay.classList.contains('open')) { toggleMenu(); }
+            const serviceItem = document.getElementById('serviceMenu');
+            const content = serviceItem.querySelector('.accordion-content');
+            if (!content.style.maxHeight) { toggleAccordion('serviceMenu'); }
+        }
+
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('show'); }
+
+        function openLightbox(src, title) {
+            const modal = document.getElementById('lightboxModal');
+            const img = document.getElementById('lightboxImg');
+            const loader = document.getElementById('lightboxLoader');
+            const titleEl = document.getElementById('lightboxTitle');
+            titleEl.innerText = title || "DESIGN PREVIEW";
+            modal.classList.add('show');
+            img.style.display = 'none';
+            loader.style.display = 'block';
+            let displaySrc = src;
+            if (!appConfig.useLocalImages && src.includes('unsplash')) {
+                displaySrc = src.replace('w=500', 'w=1600').replace('q=60', 'q=90');
+            } 
+            img.src = displaySrc;
+            img.onload = () => { loader.style.display = 'none'; img.style.display = 'block'; };
+        }
+
+        function closeLightboxOnly() { document.getElementById('lightboxModal').classList.remove('show'); }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                if (event.target.id === 'lightboxModal') { closeLightboxOnly(); } 
+                else { event.target.classList.remove('show'); }
+            }
+        }
+
+        const slides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 4000);
+
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            preloader.style.visibility = 'hidden';
+            initSite();
+        });
+    </script>
+</body>
+</html>

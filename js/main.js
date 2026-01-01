@@ -5,7 +5,6 @@ window.addEventListener('load', () => {
     // A. Handle Preloader
     const preloader = document.getElementById('preloader');
     if(preloader) {
-        // Delay sedikit agar animasi logo terlihat smooth sebelum hilang
         setTimeout(() => {
             preloader.style.opacity = '0';
             preloader.style.visibility = 'hidden';
@@ -16,11 +15,11 @@ window.addEventListener('load', () => {
     updateLanguageUI();
     updateWALinks();
     
-    // C. Set Tombol Bahasa di Header sesuai data tersimpan
+    // C. Set Tombol Bahasa
     const toggleBtn = document.getElementById('langToggle');
     if(toggleBtn) toggleBtn.setAttribute('data-lang', siteData.currentLang);
 
-    // D. MODIFIKASI: Active Menu State (Tandai Menu Aktif)
+    // D. Active Menu State
     const currentPath = window.location.pathname.split("/").pop() || 'index.html';
     const menuLinks = document.querySelectorAll('.menu-title');
     menuLinks.forEach(link => {
@@ -28,7 +27,7 @@ window.addEventListener('load', () => {
         if (href === currentPath) {
             link.style.color = '#ffffff';
             link.style.fontWeight = '900';
-            link.style.borderBottom = '1px solid #fff'; // Opsional: garis bawah
+            link.style.borderBottom = '1px solid #fff';
         }
     });
 
@@ -43,7 +42,8 @@ window.addEventListener('load', () => {
     }
     if (document.getElementById('paymentList')) renderPayments();
     if (document.getElementById('testimonialGrid')) {
-        renderTestimonials();
+        renderTestimonials(); // Render data bawaan
+        loadLocalReviews();   // MODIFIKASI: Render data inputan user
         setupReviewStars(); 
     }
 });
@@ -51,15 +51,12 @@ window.addEventListener('load', () => {
 // 2. LOGIC BAHASA
 function toggleLanguage() {
     siteData.currentLang = siteData.currentLang === 'id' ? 'en' : 'id';
-    
-    // MODIFIKASI: Simpan ke LocalStorage agar tidak reset saat pindah halaman
     localStorage.setItem('usahadulu_lang', siteData.currentLang);
 
     const toggleBtn = document.getElementById('langToggle');
     if(toggleBtn) toggleBtn.setAttribute('data-lang', siteData.currentLang);
     
     updateLanguageUI();
-    
     if(document.getElementById('dynamicServiceList')) renderServices();
     if(document.getElementById('faqContent')) renderFAQ();
     updateWALinks();
@@ -90,7 +87,7 @@ function updateWALinks() {
 const cursor = document.getElementById('cursor');
 function bindHoverEvents() {
     if(!cursor) return;
-    const hoverTargets = document.querySelectorAll('.hover-target, a, button, .menu-title');
+    const hoverTargets = document.querySelectorAll('.hover-target, a, button, .menu-title, .social-icon-btn');
     hoverTargets.forEach(target => {
         target.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
         target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
@@ -174,11 +171,9 @@ function renderPortfolio(cat) {
     items.forEach(item => {
         const div = document.createElement('div');
         div.className = 'portfolio-item hover-target';
-        
         let imgSrc = item.fileName; 
         if(!imgSrc.includes('http')) imgSrc = 'img/' + imgSrc; 
         else imgSrc = item.demoUrl; 
-
         div.onclick = () => openLightbox(imgSrc, item.title);
         div.innerHTML = `<img src="${imgSrc}" loading="lazy"><div class="portfolio-tag">${item.category.toUpperCase()}</div>`;
         grid.appendChild(div);
@@ -198,14 +193,11 @@ function renderFilters() {
 function renderPayments() {
     const container = document.getElementById('paymentList');
     if(!container) return;
-    
-    // Group by Category
     const categories = {};
     siteData.payments.forEach(pay => {
         if (!categories[pay.cat]) categories[pay.cat] = [];
         categories[pay.cat].push(pay);
     });
-
     container.innerHTML = '';
     for (const [catName, items] of Object.entries(categories)) {
         let itemsHtml = '';
@@ -228,7 +220,6 @@ function renderPayments() {
                     </div>`;
             }
         });
-
         const catDiv = document.createElement('div');
         catDiv.className = 'payment-category';
         catDiv.innerHTML = `
@@ -243,16 +234,7 @@ function renderPayments() {
     bindHoverEvents();
 }
 
-function renderTestimonials() {
-    const grid = document.getElementById('testimonialGrid');
-    if(!grid) return;
-    grid.innerHTML = '';
-    siteData.testimonials.forEach(t => {
-        grid.innerHTML += `<div class="testi-card"><div class="testi-quote">${t.quote}</div><span class="testi-author">${t.name}</span><span class="testi-brand">${t.brand}</span></div>`;
-    });
-}
-
-// 7. REVIEW SYSTEM
+// 7. REVIEW SYSTEM (MODIFIED: POST TO PAGE)
 let currentRating = 0;
 function setupReviewStars() {
     const stars = document.querySelectorAll('.star-icon');
@@ -270,22 +252,78 @@ function setupReviewStars() {
     });
 }
 
-function submitReview() {
-    const name = document.getElementById('reviewName').value;
-    const type = document.getElementById('reviewType').value;
-    const comment = document.getElementById('reviewComment').value;
+function renderTestimonials() {
+    const grid = document.getElementById('testimonialGrid');
+    if(!grid) return;
+    grid.innerHTML = '';
+    // Render data bawaan dari data.js
+    siteData.testimonials.forEach(t => {
+        grid.innerHTML += createTestimonialHTML(t.name, t.brand, t.quote);
+    });
+}
 
-    if (!name || !type || !comment) {
+// MODIFIKASI: Helper untuk membuat HTML Testimonial
+function createTestimonialHTML(name, brand, quote) {
+    return `<div class="testi-card">
+                <div class="testi-quote">${quote}</div>
+                <span class="testi-author">${name}</span>
+                <span class="testi-brand">${brand}</span>
+            </div>`;
+}
+
+// MODIFIKASI: Submit sekarang menyimpan ke LocalStorage dan menambah DOM
+function submitReview() {
+    const nameInput = document.getElementById('reviewName');
+    const typeInput = document.getElementById('reviewType');
+    const commentInput = document.getElementById('reviewComment');
+
+    const name = nameInput.value;
+    const brand = typeInput.value;
+    const comment = commentInput.value;
+
+    if (!name || !brand || !comment) {
         alert("Harap isi semua kolom ulasan.");
         return;
     }
-    const stars = "★".repeat(currentRating);
-    const msg = `Halo Admin, saya ingin mengirim ulasan:%0A%0A` +
-                `*Rating:* ${stars} (${currentRating}/5)%0A` +
-                `*Nama:* ${name}%0A` +
-                `*Order:* ${type}%0A` +
-                `*Ulasan:* "${comment}"`;
-    window.open(`https://wa.me/6282283687565?text=${msg}`, '_blank');
+
+    // Buat Objek Review Baru
+    const newReview = { name, brand, quote: comment, rating: currentRating };
+
+    // 1. Tambah ke Grid (DOM) secara langsung
+    const grid = document.getElementById('testimonialGrid');
+    const newHtml = createTestimonialHTML(name, brand, comment);
+    // Masukkan di paling atas grid (setelah elemen pertama jika mau, atau append)
+    // Kita taruh di awal agar terlihat user
+    grid.insertAdjacentHTML('afterbegin', newHtml);
+
+    // 2. Simpan ke LocalStorage agar tidak hilang saat refresh
+    saveReviewToLocal(newReview);
+
+    // 3. Reset Form
+    alert("Terima kasih! Ulasan Anda telah diposting.");
+    nameInput.value = '';
+    typeInput.value = '';
+    commentInput.value = '';
+    document.getElementById('reviewFormContainer').style.display = 'none';
+    currentRating = 0;
+    document.querySelectorAll('.star-icon').forEach(s => s.classList.remove('active'));
+}
+
+// MODIFIKASI: Fungsi Load/Save LocalStorage
+function saveReviewToLocal(reviewObj) {
+    let savedReviews = JSON.parse(localStorage.getItem('usahadulu_reviews') || '[]');
+    savedReviews.push(reviewObj);
+    localStorage.setItem('usahadulu_reviews', JSON.stringify(savedReviews));
+}
+
+function loadLocalReviews() {
+    const grid = document.getElementById('testimonialGrid');
+    if(!grid) return;
+    let savedReviews = JSON.parse(localStorage.getItem('usahadulu_reviews') || '[]');
+    // Loop dan masukkan ke grid (reverse agar yang terbaru di atas jika mau)
+    savedReviews.reverse().forEach(t => {
+        grid.insertAdjacentHTML('afterbegin', createTestimonialHTML(t.name, t.brand, t.quote));
+    });
 }
 
 // 8. LIGHTBOX

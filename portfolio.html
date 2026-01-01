@@ -18,13 +18,13 @@
     <div id="cursor"></div>
 
     <div id="preloader">
-        <img src="img/logo_ambigram.png" onerror="this.src='https://placehold.co/150x50/000/fff?text=LOADING...'" alt="Loading..." class="loader-logo">
+        <img src="img/logo_ambigram.png" alt="Loading..." class="loader-logo">
     </div>
 
     <header id="main-header">
         <div class="header-left">
             <a href="index.html" class="brand-logo">
-                <img src="img/logo_web.png" onerror="this.src='https://placehold.co/150x50/000/fff?text=MAGOS'" alt="MAGOS Logo">
+                <img src="img/logo_web.png" alt="MAGOS Logo">
             </a>
             <div class="lang-switch" data-lang="id" onclick="toggleLang()">
                 <div class="lang-circle"></div>
@@ -61,34 +61,33 @@
         </div>
 
         <div class="portfolio-grid">
-            
             <div class="portfolio-item" data-category="logo" onclick="openLightbox(this)">
-                <img src="https://placehold.co/600x600/111/fff?text=LOGO+PROJECT+1" alt="Logo Design Project"> 
+                <img src="img/portfolio/logo1.jpg" alt="Logo Design Project"> 
                 <div class="portfolio-tag">Logo Design</div>
             </div>
 
             <div class="portfolio-item" data-category="apparel" onclick="openLightbox(this)">
-                <img src="https://placehold.co/600x800/111/fff?text=STREETWEAR+DESIGN" alt="Streetwear Design">
+                <img src="img/portfolio/shirt1.jpg" alt="Streetwear Design">
                 <div class="portfolio-tag">Streetwear</div>
             </div>
 
             <div class="portfolio-item" data-category="social" onclick="openLightbox(this)">
-                <img src="https://placehold.co/600x600/111/fff?text=INSTAGRAM+FEED" alt="Instagram Feed">
+                <img src="img/portfolio/socmed1.jpg" alt="Instagram Feed">
                 <div class="portfolio-tag">Social Media</div>
             </div>
 
             <div class="portfolio-item" data-category="logo" onclick="openLightbox(this)">
-                <img src="https://placehold.co/600x600/111/fff?text=BRANDING+IDENTITY" alt="Brand Identity">
+                <img src="img/portfolio/logo2.jpg" alt="Brand Identity">
                 <div class="portfolio-tag">Branding</div>
             </div>
 
             <div class="portfolio-item" data-category="poster" onclick="openLightbox(this)">
-                <img src="https://placehold.co/600x900/111/fff?text=CONCERT+POSTER" alt="Concert Poster">
+                <img src="img/portfolio/poster1.jpg" alt="Concert Poster">
                 <div class="portfolio-tag">Poster Art</div>
             </div>
 
              <div class="portfolio-item" data-category="apparel" onclick="openLightbox(this)">
-                <img src="https://placehold.co/600x800/111/fff?text=MERCH+DESIGN" alt="Merch Design">
+                <img src="img/portfolio/shirt2.jpg" alt="Merch Design">
                 <div class="portfolio-tag">Merchandise</div>
             </div>
         </div>
@@ -128,58 +127,40 @@
     </div>
 
     <script>
-        // 1. PRELOADER
+        // --- PRELOADER ---
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
-            if(preloader) {
-                preloader.style.opacity = '0';
-                setTimeout(() => { preloader.style.display = 'none'; }, 800);
-            }
+            preloader.style.opacity = '0';
+            setTimeout(() => { preloader.style.display = 'none'; }, 800);
         });
 
-        // 2. CUSTOM CURSOR
+        // --- CUSTOM CURSOR ---
         const cursor = document.getElementById('cursor');
-        if (cursor) {
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-            });
-            document.querySelectorAll('a, button, .portfolio-item').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-            });
-        }
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        document.querySelectorAll('a, button, .portfolio-item').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
 
-        // 3. MENU TOGGLE (Burger Menu)
+        // --- MENU TOGGLE ---
         function toggleMenu() {
             document.querySelector('.menu-btn').classList.toggle('active');
             document.querySelector('.nav-overlay').classList.toggle('open');
             document.body.classList.toggle('no-scroll');
         }
 
-        // 4. LANGUAGE TOGGLE
-        function toggleLang() {
-            const langSwitch = document.querySelector('.lang-switch');
-            const currentLang = langSwitch.getAttribute('data-lang');
-            
-            if (currentLang === 'id') {
-                langSwitch.setAttribute('data-lang', 'en');
-                console.log("Switched to English");
-            } else {
-                langSwitch.setAttribute('data-lang', 'id');
-                console.log("Switched to Indonesia");
-            }
-        }
-
-        // 5. PORTFOLIO FILTER LOGIC
+        // --- PORTFOLIO FILTER ---
         const filterBtns = document.querySelectorAll('.filter-btn');
         const items = document.querySelectorAll('.portfolio-item');
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Hapus kelas active dari semua tombol
+                // Remove active class from all btns
                 filterBtns.forEach(b => b.classList.remove('active'));
-                // Tambahkan kelas active ke tombol yang diklik
+                // Add active to clicked btn
                 btn.classList.add('active');
 
                 const filterValue = btn.getAttribute('data-filter');
@@ -187,7 +168,7 @@
                 items.forEach(item => {
                     if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
                         item.style.display = 'block';
-                        // Reset animasi agar efek fade-in muncul lagi
+                        // Re-trigger animation
                         item.style.animation = 'none';
                         item.offsetHeight; /* trigger reflow */
                         item.style.animation = 'fadeInGrid 0.5s forwards';
@@ -198,14 +179,13 @@
             });
         });
 
-        // 6. LIGHTBOX LOGIC (Pop-up Gambar)
+        // --- LIGHTBOX LOGIC ---
         const lightbox = document.getElementById('lightboxModal');
         const lightboxImg = document.getElementById('lightboxImg');
         const lightboxTitle = document.getElementById('lightboxTitle');
         const lightboxLoader = document.getElementById('lightboxLoader');
 
         function openLightbox(element) {
-            // Ambil sumber gambar dari elemen yang diklik
             const imgSrc = element.querySelector('img').src;
             const title = element.querySelector('.portfolio-tag').innerText;
             
@@ -213,11 +193,11 @@
             lightboxImg.style.display = 'none';
             lightboxLoader.style.display = 'block';
             
-            // Set konten lightbox
+            // Set content
             lightboxImg.src = imgSrc;
             lightboxTitle.innerText = title;
 
-            // Tunggu gambar selesai dimuat baru tampilkan
+            // Wait for image load
             lightboxImg.onload = () => {
                 lightboxLoader.style.display = 'none';
                 lightboxImg.style.display = 'block';
@@ -226,13 +206,12 @@
 
         function closeLightbox() {
             lightbox.classList.remove('show');
-            // Bersihkan src setelah animasi selesai agar tidak flicker saat dibuka lagi
             setTimeout(() => {
                 lightboxImg.src = ''; 
             }, 300);
         }
 
-        // Tutup lightbox jika klik di luar gambar
+        // Close lightbox on click outside image
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox || e.target.classList.contains('modal-content-lightbox')) {
                 closeLightbox();

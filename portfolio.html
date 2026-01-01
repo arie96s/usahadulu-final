@@ -130,26 +130,46 @@
         // --- PRELOADER ---
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
-            preloader.style.opacity = '0';
-            setTimeout(() => { preloader.style.display = 'none'; }, 800);
+            if(preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => { preloader.style.display = 'none'; }, 800);
+            }
         });
 
         // --- CUSTOM CURSOR ---
         const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-        document.querySelectorAll('a, button, .portfolio-item').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-        });
+        if (cursor) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            document.querySelectorAll('a, button, .portfolio-item').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
 
         // --- MENU TOGGLE ---
         function toggleMenu() {
             document.querySelector('.menu-btn').classList.toggle('active');
             document.querySelector('.nav-overlay').classList.toggle('open');
             document.body.classList.toggle('no-scroll');
+        }
+
+        // --- LANGUAGE TOGGLE (SUDAH DITAMBAHKAN) ---
+        function toggleLang() {
+            const langSwitch = document.querySelector('.lang-switch');
+            const currentLang = langSwitch.getAttribute('data-lang');
+            
+            // Logika ganti atribut visual
+            if (currentLang === 'id') {
+                langSwitch.setAttribute('data-lang', 'en');
+                // Di sini bisa ditambahkan logika untuk mengganti teks halaman jika mau
+                console.log("Bahasa diganti ke English");
+            } else {
+                langSwitch.setAttribute('data-lang', 'id');
+                console.log("Bahasa diganti ke Indonesia");
+            }
         }
 
         // --- PORTFOLIO FILTER ---

@@ -3,220 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | UsahaDulu Studio</title>
-    
-    <link rel="stylesheet" href="style.css">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>USAHADULU | Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-
+    <div id="preloader"><img src="img/logo_ambigram.png" class="loader-logo"></div>
     <div id="cursor"></div>
+    
+    <a href="#" id="waFloatBtn" target="_blank" class="float-wa hover-target">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+    </a>
 
-    <div id="preloader">
-        <img src="img/logo_ambigram.png" alt="Loading..." class="loader-logo">
-    </div>
-
-    <header id="main-header">
+    <header id="mainHeader">
         <div class="header-left">
-            <a href="index.html" class="brand-logo">
-                <img src="img/logo_web.png" alt="MAGOS Logo">
-            </a>
-            <div class="lang-switch" data-lang="id" onclick="toggleLang()">
-                <div class="lang-circle"></div>
-            </div>
+            <div class="brand-logo hover-target"><a href="index.html"><img id="headerLogoImg" src="img/logo_ambigram.png" alt="HOME"></a></div>
         </div>
-        <div class="menu-btn" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div style="display:flex; align-items:center;">
+            <div class="lang-switch hover-target" id="langToggle" data-lang="id" onclick="toggleLanguage()"><div class="lang-circle"></div></div>
+            <div class="menu-btn hover-target" id="menuBtn"><span></span><span></span><span></span></div>
         </div>
     </header>
 
-    <div class="nav-overlay">
-        <div class="menu-list">
-            <div class="menu-item"><a href="index.html" class="menu-title">HOME</a></div>
-            <div class="menu-item"><a href="services.html" class="menu-title">SERVICES</a></div>
-            <div class="menu-item"><a href="portfolio.html" class="menu-title" style="color:#fff;">PORTFOLIO</a></div>
-            <div class="menu-item"><a href="payment.html" class="menu-title">PAYMENT</a></div>
-            <div class="menu-item"><a href="testimonial.html" class="menu-title">TESTIMONIALS</a></div>
-            <div class="menu-item"><a href="about.html" class="menu-title">ABOUT US</a></div>
-        </div>
+    <div class="nav-overlay" id="navOverlay">
+        <ul class="menu-list">
+            <li class="menu-item"><a href="services.html" class="menu-title hover-target" data-i18n="nav_services">SERVICES</a></li>
+            <li class="menu-item"><a href="portfolio.html" class="menu-title hover-target" data-i18n="nav_portfolio">PORTFOLIO</a></li>
+            <li class="menu-item"><a href="payment.html" class="menu-title hover-target" data-i18n="nav_payment">PAYMENT METHODS</a></li>
+            <li class="menu-item"><a href="testimonial.html" class="menu-title hover-target" data-i18n="nav_testimonials">TESTIMONIALS</a></li>
+            <li class="menu-item"><a href="faq.html" class="menu-title hover-target" data-i18n="nav_faq">FAQ / Q&A</a></li>
+            <li class="menu-item"><a href="https://arie96s.github.io/magosstreetwear" target="_blank" class="menu-title hover-target">MAGOS STREETWEAR</a></li>
+            <li class="menu-item"><a href="about.html" class="menu-title hover-target" data-i18n="nav_about">ABOUT US</a></li>
+        </ul>
     </div>
 
     <div class="page-content">
-        
-        <div class="page-title">SELECTED WORKS</div>
+        <h1 class="page-title" data-i18n="portfolio_title">OUR WORK</h1>
 
-        <div class="filter-container">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="logo">Logo</button>
-            <button class="filter-btn" data-filter="apparel">Apparel</button>
-            <button class="filter-btn" data-filter="social">Social Media</button>
-            <button class="filter-btn" data-filter="poster">Poster</button>
-        </div>
+        <div class="filter-container" id="filterContainer"></div>
 
-        <div class="portfolio-grid">
-            <div class="portfolio-item" data-category="logo" onclick="openLightbox(this)">
-                <img src="img/portfolio/logo1.jpg" alt="Logo Design Project"> 
-                <div class="portfolio-tag">Logo Design</div>
-            </div>
-
-            <div class="portfolio-item" data-category="apparel" onclick="openLightbox(this)">
-                <img src="img/portfolio/shirt1.jpg" alt="Streetwear Design">
-                <div class="portfolio-tag">Streetwear</div>
-            </div>
-
-            <div class="portfolio-item" data-category="social" onclick="openLightbox(this)">
-                <img src="img/portfolio/socmed1.jpg" alt="Instagram Feed">
-                <div class="portfolio-tag">Social Media</div>
-            </div>
-
-            <div class="portfolio-item" data-category="logo" onclick="openLightbox(this)">
-                <img src="img/portfolio/logo2.jpg" alt="Brand Identity">
-                <div class="portfolio-tag">Branding</div>
-            </div>
-
-            <div class="portfolio-item" data-category="poster" onclick="openLightbox(this)">
-                <img src="img/portfolio/poster1.jpg" alt="Concert Poster">
-                <div class="portfolio-tag">Poster Art</div>
-            </div>
-
-             <div class="portfolio-item" data-category="apparel" onclick="openLightbox(this)">
-                <img src="img/portfolio/shirt2.jpg" alt="Merch Design">
-                <div class="portfolio-tag">Merchandise</div>
-            </div>
-        </div>
+        <div class="portfolio-grid" id="portfolioGrid"></div>
 
         <div class="portfolio-cta-container">
             <h2 class="cta-heading">Suka Dengan Hasil Karya Kami?</h2>
             <p class="cta-sub">Jangan biarkan ide Anda hanya jadi angan-angan. Mari kita eksekusi sekarang.</p>
-            <a href="services.html" class="cta-btn cta-btn-large">
-                Buat Penawaran Sekarang
+            <a href="services.html" class="service-action-btn hover-target">
+                BUAT PENAWARAN
             </a>
         </div>
-
     </div>
-
-    <footer>
-        <div class="footer-left">
-            &copy; 2025 USAHADULU STUDIO. All Rights Reserved.
-        </div>
-        <div class="social-links" style="display: flex; gap: 20px;">
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-whatsapp"></i></a>
-            <a href="#"><i class="fab fa-behance"></i></a>
-        </div>
-    </footer>
-
-    <a href="https://wa.me/6281234567890" class="float-wa" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.893 3.056.893 3.179 0 5.767-2.587 5.767-5.766.001-3.187-2.836-6.08-6.027-6.08zm6.311 4.238c0-2.855-3.189-5.189-6.311-5.189-3.414 0-6.709 2.511-6.711 5.926 0 1.258.371 2.375 1.002 3.394l-1.364 4.978 5.075-1.328c.95.539 2.158.851 3.238.851 3.42 0 6.071-3.21 6.071-5.905z"/></svg>
-    </a>
 
     <div id="lightboxModal" class="modal">
-        <div class="close-modal" onclick="closeLightbox()">&times;</div>
-        <div id="lightboxTitle">PROJECT NAME</div>
+        <div class="close-modal hover-target" onclick="closeLightboxOnly()">×</div>
+        <div id="lightboxTitle"></div>
         <div class="modal-content-lightbox">
             <div id="lightboxLoader" style="color:#fff;">Loading...</div>
-            <img id="lightboxImg" src="" alt="Full Project">
+            <img id="lightboxImg" src="">
         </div>
     </div>
 
-    <script>
-        // --- PRELOADER ---
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            preloader.style.opacity = '0';
-            setTimeout(() => { preloader.style.display = 'none'; }, 800);
-        });
+    <footer><div class="copyright">&copy; 2025 USAHADULU.COM.</div></footer>
 
-        // --- CUSTOM CURSOR ---
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-        document.querySelectorAll('a, button, .portfolio-item').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-        });
-
-        // --- MENU TOGGLE ---
-        function toggleMenu() {
-            document.querySelector('.menu-btn').classList.toggle('active');
-            document.querySelector('.nav-overlay').classList.toggle('open');
-            document.body.classList.toggle('no-scroll');
-        }
-
-        // --- PORTFOLIO FILTER ---
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const items = document.querySelectorAll('.portfolio-item');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all btns
-                filterBtns.forEach(b => b.classList.remove('active'));
-                // Add active to clicked btn
-                btn.classList.add('active');
-
-                const filterValue = btn.getAttribute('data-filter');
-
-                items.forEach(item => {
-                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                        item.style.display = 'block';
-                        // Re-trigger animation
-                        item.style.animation = 'none';
-                        item.offsetHeight; /* trigger reflow */
-                        item.style.animation = 'fadeInGrid 0.5s forwards';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // --- LIGHTBOX LOGIC ---
-        const lightbox = document.getElementById('lightboxModal');
-        const lightboxImg = document.getElementById('lightboxImg');
-        const lightboxTitle = document.getElementById('lightboxTitle');
-        const lightboxLoader = document.getElementById('lightboxLoader');
-
-        function openLightbox(element) {
-            const imgSrc = element.querySelector('img').src;
-            const title = element.querySelector('.portfolio-tag').innerText;
-            
-            lightbox.classList.add('show');
-            lightboxImg.style.display = 'none';
-            lightboxLoader.style.display = 'block';
-            
-            // Set content
-            lightboxImg.src = imgSrc;
-            lightboxTitle.innerText = title;
-
-            // Wait for image load
-            lightboxImg.onload = () => {
-                lightboxLoader.style.display = 'none';
-                lightboxImg.style.display = 'block';
-            };
-        }
-
-        function closeLightbox() {
-            lightbox.classList.remove('show');
-            setTimeout(() => {
-                lightboxImg.src = ''; 
-            }, 300);
-        }
-
-        // Close lightbox on click outside image
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox || e.target.classList.contains('modal-content-lightbox')) {
-                closeLightbox();
-            }
-        });
-    </script>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

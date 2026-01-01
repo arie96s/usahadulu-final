@@ -554,3 +554,178 @@ footer a, footer div { pointer-events: auto; }
     .process-grid { grid-template-columns: 1fr; }
     .step-number { font-size: 50px; }
 }
+/* --- ORDER FORM & PAYMENT ADDITIONS --- */
+
+/* Mini Button di Tabel Service */
+.mini-order-btn {
+    display: inline-block;
+    padding: 5px 12px;
+    background: transparent;
+    border: 1px solid #555;
+    color: #fff;
+    font-size: 10px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+.mini-order-btn:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* Order Form Styling */
+.order-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #0a0a0a;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #222;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    background: #111;
+    border: 1px solid #333;
+    padding: 12px 15px;
+    color: #ccc;
+    border-radius: 6px;
+    font-family: var(--font-main);
+    font-size: 14px;
+    transition: border 0.3s;
+}
+
+.form-input:focus {
+    border-color: #fff;
+    outline: none;
+    color: #fff;
+}
+
+.form-input.readonly {
+    background: #1a1a1a;
+    border-color: #222;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.submit-order-btn {
+    width: 100%;
+    padding: 15px;
+    background: #fff;
+    color: #000;
+    font-weight: 900;
+    border: none;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    transition: all 0.3s;
+}
+
+.submit-order-btn:hover {
+    background: #ccc;
+    transform: translateY(-2px);
+}
+
+/* Payment Page - Order Summary Box */
+.summary-card {
+    background: #111;
+    border: 1px dashed #444;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.summary-title {
+    font-size: 14px;
+    color: #fff;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.summary-row strong {
+    color: #fff;
+    text-align: right;
+}
+
+.summary-row.total {
+    border-top: 1px solid #333;
+    padding-top: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.summary-note {
+    font-size: 11px;
+    color: #666;
+    margin-top: 15px;
+    font-style: italic;
+}
+
+/* Konfirmasi Upload UI */
+.confirm-upload-section {
+    margin-top: 30px;
+    background: #111;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #222;
+    text-align: center;
+}
+
+.file-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    border: 1px solid #333;
+    margin-bottom: 15px;
+    color: #888;
+    font-size: 12px;
+}
+
+.confirm-btn {
+    background: #25D366; /* Warna WA */
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.confirm-btn:hover {
+    background: #1ebc57;
+}
+

@@ -7,7 +7,6 @@ const appConfig = {
 
 // --- 1. DATA STRUCTURE ---
 const siteData = {
-    // MODIFIKASI: Cek apakah user sudah pernah memilih bahasa sebelumnya
     currentLang: localStorage.getItem('usahadulu_lang') || 'id',
     
     translations: {
@@ -22,15 +21,15 @@ const siteData = {
             hero_cta: "MULAI PROYEK",
             hero_tagline: "SOLUSI VISUAL PROFESIONAL UNTUK IDENTITAS BRAND ANDA",
             about_title: "TENTANG KAMI",
-            payment_title: "METODE PEMBAYARAN",
-            pay_instruct_title: "INSTRUKSI KONFIRMASI:",
-            pay_instruct_text: "Harap melakukan konfirmasi pembayaran dengan melampirkan bukti transfer melalui WhatsApp resmi kami untuk mempercepat proses verifikasi pesanan Anda.",
+            payment_title: "CHECKOUT & PEMBAYARAN",
+            pay_instruct_title: "INSTRUKSI PEMBAYARAN:",
+            pay_instruct_text: "Silakan transfer sesuai nominal di Ringkasan Order, lalu upload bukti transfer di bawah.",
             about_desc: "<strong>USAHADULU.COM</strong> adalah entitas kreatif yang bergerak di bidang visual digital. Fokus pada estetika underground, streetwear, dark arts, dan desain fungsional. Kami berbasis di Dumai.",
             portfolio_title: "KARYA KAMI",
             order_prefix: "Halo Admin USAHADULU, saya tertarik order ",
             filter_all: "SEMUA",
             price_start: "Mulai",
-            btn_order_now: "PESAN SEKARANG"
+            btn_order_now: "ORDER NOW" // Tombol Baru
         },
         en: {
             nav_services: "SERVICES",
@@ -43,15 +42,15 @@ const siteData = {
             hero_cta: "START PROJECT",
             hero_tagline: "PROFESSIONAL VISUAL SOLUTIONS FOR YOUR BRAND IDENTITY",
             about_title: "ABOUT US",
-            payment_title: "PAYMENT METHODS",
-            pay_instruct_title: "CONFIRMATION INSTRUCTION:",
-            pay_instruct_text: "Please confirm your payment by attaching the transfer receipt via our official WhatsApp to expedite your order verification process.",
+            payment_title: "CHECKOUT & PAYMENT",
+            pay_instruct_title: "PAYMENT INSTRUCTION:",
+            pay_instruct_text: "Please transfer the amount shown in Order Summary, then upload the proof below.",
             about_desc: "<strong>USAHADULU.COM</strong> is a creative entity specializing in digital visuals. Focused on underground aesthetics, streetwear, dark arts, and functional design. Based in Dumai City.",
             portfolio_title: "OUR WORK",
             order_prefix: "Hello Admin USAHADULU, I'm interested in ordering ",
             filter_all: "ALL",
             price_start: "Start from",
-            btn_order_now: "ORDER NOW"
+            btn_order_now: "ORDER NOW" // New Button
         }
     },
     faq: [

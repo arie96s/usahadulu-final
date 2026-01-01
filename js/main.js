@@ -40,11 +40,19 @@ window.addEventListener('load', () => {
         renderPortfolio('all');
         renderFilters();
     }
-    if (document.getElementById('paymentList')) renderPayments();
+    if (document.getElementById('paymentList')) {
+        renderPayments();
+        renderOrderSummary(); // Render Ringkasan Order
+    }
     if (document.getElementById('testimonialGrid')) {
-        renderTestimonials(); // Render data bawaan
-        loadLocalReviews();   // MODIFIKASI: Render data inputan user
+        renderTestimonials(); 
+        loadLocalReviews();   
         setupReviewStars(); 
+    }
+
+    // F. Handle Halaman Order (Jika ada)
+    if (document.getElementById('orderForm')) {
+        initOrderPage();
     }
 });
 
@@ -87,7 +95,7 @@ function updateWALinks() {
 const cursor = document.getElementById('cursor');
 function bindHoverEvents() {
     if(!cursor) return;
-    const hoverTargets = document.querySelectorAll('.hover-target, a, button, .menu-title, .social-icon-btn');
+    const hoverTargets = document.querySelectorAll('.hover-target, a, button, .menu-title, .social-icon-btn, input, select, textarea');
     hoverTargets.forEach(target => {
         target.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
         target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
@@ -119,7 +127,7 @@ function toggleMenu() {
 }
 if(menuBtn) menuBtn.addEventListener('click', toggleMenu);
 
-// 6. FUNGSI RENDER
+// 6. FUNGSI RENDER SERVICES (MODIFIKASI LINK ORDER)
 function renderServices() {
     const container = document.getElementById('dynamicServiceList');
     if(!container) return;
@@ -129,8 +137,21 @@ function renderServices() {
         const name = lang === 'id' ? svc.name_id : svc.name_en;
         const desc = lang === 'id' ? svc.desc_id : svc.desc_en;
         const t = siteData.translations[lang];
+        
         let tableRows = '';
-        svc.packages.forEach(pkg => { tableRows += `<tr><td>${pkg.item}</td><td>${pkg.price}</td></tr>`; });
+        svc.packages.forEach(pkg => { 
+            // Tambahkan link ke order.html dengan parameter
+            const orderLink = `order.html?service=${encodeURIComponent(name)}&package=${encodeURIComponent(pkg.item)}&price=${encodeURIComponent(pkg.price)}`;
+            
+            tableRows += `
+                <tr>
+                    <td>${pkg.item}</td>
+                    <td>${pkg.price}</td>
+                    <td style="text-align:right;">
+                        <a href="${orderLink}" class="mini-order-btn hover-target">ORDER</a>
+                    </td>
+                </tr>`; 
+        });
         
         const li = document.createElement('li');
         li.className = 'service-wrapper';
@@ -142,9 +163,6 @@ function renderServices() {
             <div class="service-body">
                 <p class="service-desc">${desc}</p>
                 <table class="price-table">${tableRows}</table>
-                <div class="service-btn-wrapper">
-                    <a href="https://wa.me/6282283687565?text=Order%20${name}" target="_blank" class="service-action-btn hover-target">${t.btn_order_now}</a>
-                </div>
             </div>`;
         container.appendChild(li);
     });
@@ -234,7 +252,7 @@ function renderPayments() {
     bindHoverEvents();
 }
 
-// 7. REVIEW SYSTEM (MODIFIED: POST TO PAGE)
+// 7. REVIEW SYSTEM
 let currentRating = 0;
 function setupReviewStars() {
     const stars = document.querySelectorAll('.star-icon');
@@ -256,13 +274,11 @@ function renderTestimonials() {
     const grid = document.getElementById('testimonialGrid');
     if(!grid) return;
     grid.innerHTML = '';
-    // Render data bawaan dari data.js
     siteData.testimonials.forEach(t => {
         grid.innerHTML += createTestimonialHTML(t.name, t.brand, t.quote);
     });
 }
 
-// MODIFIKASI: Helper untuk membuat HTML Testimonial
 function createTestimonialHTML(name, brand, quote) {
     return `<div class="testi-card">
                 <div class="testi-quote">${quote}</div>
@@ -271,7 +287,6 @@ function createTestimonialHTML(name, brand, quote) {
             </div>`;
 }
 
-// MODIFIKASI: Submit sekarang menyimpan ke LocalStorage dan menambah DOM
 function submitReview() {
     const nameInput = document.getElementById('reviewName');
     const typeInput = document.getElementById('reviewType');
@@ -286,20 +301,12 @@ function submitReview() {
         return;
     }
 
-    // Buat Objek Review Baru
     const newReview = { name, brand, quote: comment, rating: currentRating };
-
-    // 1. Tambah ke Grid (DOM) secara langsung
     const grid = document.getElementById('testimonialGrid');
     const newHtml = createTestimonialHTML(name, brand, comment);
-    // Masukkan di paling atas grid (setelah elemen pertama jika mau, atau append)
-    // Kita taruh di awal agar terlihat user
     grid.insertAdjacentHTML('afterbegin', newHtml);
-
-    // 2. Simpan ke LocalStorage agar tidak hilang saat refresh
     saveReviewToLocal(newReview);
 
-    // 3. Reset Form
     alert("Terima kasih! Ulasan Anda telah diposting.");
     nameInput.value = '';
     typeInput.value = '';
@@ -309,7 +316,6 @@ function submitReview() {
     document.querySelectorAll('.star-icon').forEach(s => s.classList.remove('active'));
 }
 
-// MODIFIKASI: Fungsi Load/Save LocalStorage
 function saveReviewToLocal(reviewObj) {
     let savedReviews = JSON.parse(localStorage.getItem('usahadulu_reviews') || '[]');
     savedReviews.push(reviewObj);
@@ -320,7 +326,6 @@ function loadLocalReviews() {
     const grid = document.getElementById('testimonialGrid');
     if(!grid) return;
     let savedReviews = JSON.parse(localStorage.getItem('usahadulu_reviews') || '[]');
-    // Loop dan masukkan ke grid (reverse agar yang terbaru di atas jika mau)
     savedReviews.reverse().forEach(t => {
         grid.insertAdjacentHTML('afterbegin', createTestimonialHTML(t.name, t.brand, t.quote));
     });
@@ -339,3 +344,143 @@ function closeLightboxOnly() {
     const modal = document.getElementById('lightboxModal');
     if(modal) modal.classList.remove('show');
 }
+
+// 9. LOGIC HALAMAN ORDER (NEW)
+function initOrderPage() {
+    // Ambil parameter dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const service = urlParams.get('service') || '-';
+    const pkg = urlParams.get('package') || '-';
+    const price = urlParams.get('price') || 'TBD';
+
+    // Auto-fill form
+    document.getElementById('orderService').value = service;
+    document.getElementById('orderPackage').value = pkg;
+    document.getElementById('orderPrice').value = price;
+}
+
+// FUNGSI SUBMIT ORDER & GENERATE PDF
+window.submitOrder = function() {
+    const name = document.getElementById('clientName').value;
+    const phone = document.getElementById('clientPhone').value;
+    const email = document.getElementById('clientEmail').value;
+    const brief = document.getElementById('clientBrief').value;
+    const service = document.getElementById('orderService').value;
+    const pkg = document.getElementById('orderPackage').value;
+    const price = document.getElementById('orderPrice').value;
+
+    if(!name || !phone || !email) {
+        alert("Mohon lengkapi data diri Anda.");
+        return;
+    }
+
+    // A. Simpan ke LocalStorage untuk halaman Payment
+    const orderData = { name, phone, email, brief, service, pkg, price, date: new Date().toLocaleDateString() };
+    localStorage.setItem('currentOrder', JSON.stringify(orderData));
+
+    // B. Generate PDF (Client Side)
+    // Note: logo_ambigram.png harus accessible
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Style Header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("USAHADULU STUDIO", 105, 20, null, null, "center");
+    
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text("Professional Visual Solutions | Dumai City", 105, 28, null, null, "center");
+    doc.line(20, 32, 190, 32); // Horizontal line
+
+    // Order Details
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("INVOICE / ORDER SHEET", 20, 45);
+
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    
+    let y = 60;
+    const content = [
+        ["Date", orderData.date],
+        ["Client Name", name],
+        ["Phone/WA", phone],
+        ["Email", email],
+        ["Service Category", service],
+        ["Package Selected", pkg],
+        ["Price Estimate", price],
+        ["Project Brief", brief]
+    ];
+
+    content.forEach(row => {
+        doc.setFont("helvetica", "bold");
+        doc.text(row[0] + ":", 20, y);
+        doc.setFont("helvetica", "normal");
+        // Handle multiline text for Brief
+        if(row[0] === "Project Brief") {
+            const splitBrief = doc.splitTextToSize(row[1], 120);
+            doc.text(splitBrief, 70, y);
+            y += (splitBrief.length * 7); 
+        } else {
+            doc.text(row[1], 70, y);
+            y += 10;
+        }
+    });
+
+    y += 10;
+    doc.line(20, y, 190, y);
+    y += 10;
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(10);
+    doc.text("*Please proceed to payment to confirm your order.", 20, y);
+    doc.text("*Upload proof of transfer on the payment page.", 20, y+5);
+
+    // Save PDF
+    doc.save(`Order_${name}_USAHADULU.pdf`);
+
+    // C. Redirect to Payment
+    setTimeout(() => {
+        window.location.href = "payment.html";
+    }, 1500); // Delay sedikit agar download PDF mulai
+};
+
+// 10. RENDER ORDER SUMMARY DI HALAMAN PAYMENT
+function renderOrderSummary() {
+    const container = document.getElementById('orderSummaryContainer');
+    if(!container) return;
+
+    const data = JSON.parse(localStorage.getItem('currentOrder'));
+    if(!data) {
+        container.innerHTML = '<p style="color:#666; font-style:italic;">Belum ada pesanan aktif. Silakan pilih layanan terlebih dahulu.</p>';
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="summary-card">
+            <h3 class="summary-title">RINGKASAN PESANAN</h3>
+            <div class="summary-row"><span>Nama Klien:</span> <strong>${data.name}</strong></div>
+            <div class="summary-row"><span>Paket:</span> <strong>${data.service} - ${data.pkg}</strong></div>
+            <div class="summary-row total"><span>TOTAL TAGIHAN:</span> <strong>${data.price}</strong></div>
+            <p class="summary-note">Silakan transfer DP 50% atau Pelunasan ke salah satu rekening di bawah.</p>
+        </div>
+        
+        <div class="confirm-upload-section">
+            <h3 class="summary-title" style="margin-top:20px;">KONFIRMASI PEMBAYARAN</h3>
+            <p style="font-size:12px; color:#888; margin-bottom:15px;">Lampirkan bukti transfer agar pesanan diproses.</p>
+            <input type="file" id="proofFile" class="file-input hover-target">
+            <button class="confirm-btn hover-target" onclick="sendConfirmation()">KIRIM KONFIRMASI (WHATSAPP)</button>
+        </div>
+    `;
+}
+
+window.sendConfirmation = function() {
+    const data = JSON.parse(localStorage.getItem('currentOrder'));
+    if(!data) { alert("Data order tidak ditemukan."); return; }
+    
+    // Karena kita tidak punya backend untuk upload file, kita arahkan user ke WA
+    // User akan diminta melampirkan file PDF/Gambar manual di WA
+    const msg = `Halo Admin USAHADULU,%0A%0ASaya sudah melakukan pembayaran untuk order:%0A- Nama: ${data.name}%0A- Paket: ${data.service} (${data.pkg})%0A- Total: ${data.price}%0A%0ABerikut saya lampirkan bukti transfer dan File Order PDF. Mohon diproses. Terima kasih.`;
+    
+    window.open(`https://wa.me/6282283687565?text=${msg}`, '_blank');
+};

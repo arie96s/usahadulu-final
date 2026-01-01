@@ -12,7 +12,8 @@
             display: flex;
             justify-content: center;
             gap: 25px;
-            margin-top: 30px;
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
         .social-icon-btn {
             width: 50px;
@@ -38,6 +39,23 @@
         }
         .social-icon-btn:hover svg {
             fill: #000;
+        }
+        
+        /* Typography khusus About */
+        .about-text-container {
+            max-width: 800px; 
+            margin: 0 auto; 
+            text-align: center; 
+            color: #ccc; 
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        .about-text-container p {
+            margin-bottom: 20px;
+        }
+        .highlight-text {
+            color: #fff;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -72,11 +90,27 @@
 
     <div class="page-content">
         <h1 class="page-title" data-i18n="about_title">ABOUT US</h1>
-        <div style="max-width: 800px; margin: 0 auto; text-align: center; color: #ccc; line-height: 1.8;">
-            <p id="aboutText">
-                Loading...
+        <div class="about-text-container">
+            <p>
+                Selamat datang di <span class="highlight-text">USAHADULU Studio</span>. 
+                Ini bukan sekadar portofolio bisnis, melainkan sebuah etalase perjalanan kreatif yang telah saya rintis sejak tahun <span class="highlight-text">2013</span>. 
+                Sebuah perjalanan panjang yang mengajarkan saya bahwa visual bukan hanya soal estetika, tapi soal rasa.
             </p>
-            <br><br>
+            <p>
+                Mungkin Anda pernah melihat sentuhan visual serupa namun dengan nama brand yang berbeda di masa lalu. Benar adanya, wadah kreatif ini memang telah <span class="highlight-text">berganti identitas berkali-kali</span>. 
+                Bukan karena tidak konsisten, melainkan bentuk adaptasi dan pencarian jati diri yang terus berevolusi seiring dengan bertambahnya pengalaman.
+            </p>
+            <p>
+                Semuanya bermula dari kamar kost sederhana saat saya masih duduk di bangku kuliah. Dari sekadar hobi, berlanjut menjadi penyambung hidup lewat jalur <i>freelance</i>, hingga kini tetap eksis menemani hari-hari saya bekerja sebagai profesional di bidang retail. 
+                Bagi saya, mendesain dan ngoding adalah istirahat terbaik—sebuah pelarian produktif sepulang kerja.
+            </p>
+            <p>
+                Di sini, tidak ada birokrasi kaku selayaknya agensi besar. Saya menawarkan komunikasi yang cair, santun, dan setara. 
+                Saya hanyalah mitra diskusi yang siap membantu menerjemahkan ide liar Anda menjadi visual yang sedap dipandang.
+            </p>
+            <p style="margin-top: 30px; font-style: italic; color: #888;">
+                "Mari berkarya, selagi bisa."
+            </p>
             
             <div class="social-icons-row">
                 <a href="https://instagram.com/arie96s" target="_blank" class="social-icon-btn hover-target" title="Instagram">

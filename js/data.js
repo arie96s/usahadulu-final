@@ -24,12 +24,21 @@ const siteData = {
             payment_title: "CHECKOUT & PEMBAYARAN",
             pay_instruct_title: "INSTRUKSI PEMBAYARAN:",
             pay_instruct_text: "Silakan transfer sesuai nominal di Ringkasan Order, lalu upload bukti transfer di bawah.",
-            about_desc: "<strong>USAHADULU.COM</strong> adalah entitas kreatif yang bergerak di bidang visual digital. Fokus pada estetika underground, streetwear, dark arts, dan desain fungsional. Kami berbasis di Dumai.",
+            
+            // --- COPYWRITING BARU (INDONESIA) ---
+            about_desc: `
+                Assalamualaikum & Salam Kreatif.<br><br>
+                <strong>USAHADULU</strong> bukanlah agensi raksasa, melainkan sebuah ruang karya sederhana yang telah bernafas sejak tahun <strong>2013</strong>. Perjalanan ini dimulai dari kamar kost saat saya masih duduk di bangku kuliah, bereksperimen dengan desain visual di sela-sela tumpukan tugas kampus.<br><br>
+                Mungkin Anda pernah mengenal saya dengan nama brand yang berbeda-beda sebelumnya. Ya, saya memang cukup sering berganti nama usaha. Bukan karena tidak konsisten, melainkan sebuah proses panjang pencarian jati diri visual yang paling jujur. Dari sekadar hobi mahasiswa, berlanjut menjadi <em>freelancer</em> penuh waktu, hingga kini saya tetap berkarya di sela-sela kesibukan pekerjaan utama saya.<br><br>
+                Semangat itu tidak pernah padam. Saya ada di sini untuk membantu menerjemahkan ide Anda menjadi visual yang berkarakter, dengan pendekatan yang personal, santai, dan bersahabat.<br><br>
+                Terima kasih telah mampir dan mempercayakan visi Anda. Mari berkarya bersama.
+            `,
+            
             portfolio_title: "KARYA KAMI",
             order_prefix: "Halo Admin USAHADULU, saya tertarik order ",
             filter_all: "SEMUA",
             price_start: "Mulai",
-            btn_order_now: "ORDER NOW" // Tombol Baru
+            btn_order_now: "ORDER SEKARANG"
         },
         en: {
             nav_services: "SERVICES",
@@ -45,12 +54,21 @@ const siteData = {
             payment_title: "CHECKOUT & PAYMENT",
             pay_instruct_title: "PAYMENT INSTRUCTION:",
             pay_instruct_text: "Please transfer the amount shown in Order Summary, then upload the proof below.",
-            about_desc: "<strong>USAHADULU.COM</strong> is a creative entity specializing in digital visuals. Focused on underground aesthetics, streetwear, dark arts, and functional design. Based in Dumai City.",
+            
+            // --- COPYWRITING BARU (ENGLISH) ---
+            about_desc: `
+                Greetings & Welcome.<br><br>
+                <strong>USAHADULU</strong> isn't a massive corporate agency. It is a humble creative home that has been breathing since <strong>2013</strong>. This journey started back in my college dorm room, experimenting with visuals between piles of assignments.<br><br>
+                You might have known me under different brand names in the past. It's true, I've changed identities a few times. Not out of inconsistency, but as a necessary journey to find my true visual soul. From a college side-hustle to a full-time freelance gig, and now keeping the passion alive amidst my daily professional career.<br><br>
+                The spark remains untouched. I'm here to help translate your raw ideas into distinct visuals, with a personal, friendly, and grounded approach.<br><br>
+                Thanks for dropping by and trusting the process. Let's make something cool together.
+            `,
+            
             portfolio_title: "OUR WORK",
             order_prefix: "Hello Admin USAHADULU, I'm interested in ordering ",
             filter_all: "ALL",
             price_start: "Start from",
-            btn_order_now: "ORDER NOW" // New Button
+            btn_order_now: "ORDER NOW"
         }
     },
     faq: [

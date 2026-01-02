@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none; /* Menyembunyikan kursor default untuk desktop */
+    cursor: none; /* Menyembunyikan kursor default */
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -21,7 +21,7 @@ body {
     font-family: var(--font-main);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    padding-bottom: 60px; /* Mencegah konten tertutup footer fixed */
+    padding-bottom: 60px;
 }
 
 body.no-scroll { overflow: hidden; }
@@ -40,8 +40,8 @@ ul { list-style: none; }
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s, height 0.2s, background-color 0.2s, transform 0.1s ease-out;
+    /* FIX: Menghapus 'transform' dari transition agar pergerakan mulus mengikuti mouse */
+    transition: width 0.2s, height 0.2s, background-color 0.2s; 
     mix-blend-mode: difference; 
     will-change: transform;
 }
@@ -103,7 +103,7 @@ header.menu-active { background: #000; }
     height: 40px;
     width: auto;
     display: block;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Tambah transisi opacity untuk animasi logo */
 }
 .brand-logo img:hover { transform: scale(1.05); }
 
@@ -174,19 +174,17 @@ header.menu-active { background: #000; }
 }
 .menu-title:hover { color: #888; }
 
-/* Magos Horror Effect */
-@keyframes horror-flow {
-    0% { color: #fff; text-shadow: 0 0 5px rgba(255,0,0,0.5); }
-    25% { color: #cc0000; text-shadow: 2px 2px 1px #000, 0 0 10px #ff0000; }
-    50% { color: #660000; text-shadow: -1px -1px 1px #333, 0 0 15px #8b0000; }
-    75% { color: #ff3333; text-shadow: 0 0 5px #ff0000; }
-    100% { color: #fff; text-shadow: 0 0 5px rgba(255,0,0,0.5); }
-}
-
+/* REVISI MAGOS: Normal White Theme */
 .magos-horror {
-    animation: horror-flow 4s infinite linear;
+    color: #fff !important;
+    text-shadow: none !important;
     font-weight: 900 !important;
     letter-spacing: 3px !important;
+    animation: none !important; /* Hilangkan animasi horror */
+    transition: color 0.3s;
+}
+.magos-horror:hover {
+    color: #888 !important;
 }
 
 /* --- COMPONENTS: FAQ, SERVICES, ETC --- */
@@ -388,16 +386,46 @@ header.menu-active { background: #000; }
 .x-icon { width: 40px; height: 25px; background: #eee; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 10px; font-weight: bold; color: #555; }
 .x-footer { padding: 15px 20px; background: #f8f8f8; text-align: center; font-size: 10px; color: #aaa; }
 
-/* WA Float */
+/* WA Float - REVISI: Hitam Putih & Draggable */
 .float-wa {
-    position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
-    background-color: #25D366; border: 2px solid #fff; border-radius: 50%;
-    display: flex; justify-content: center; align-items: center; z-index: 9999;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: transform 0.3s;
+    position: fixed; 
+    bottom: 30px; 
+    right: 30px; 
+    width: 60px; 
+    height: 60px;
+    background-color: #000; /* Hitam */
+    border: 2px solid #fff; /* Putih */
+    border-radius: 50%;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.2); 
+    transition: transform 0.1s, background-color 0.3s; /* Transform lebih cepat agar drag mulus */
+    cursor: grab; /* Indikator bisa digeser */
+    touch-action: none; /* Mencegah scroll saat drag di mobile */
 }
-.float-wa:hover { transform: scale(1.1); background-color: #fff; border-color: #25D366; }
-.float-wa svg { width: 35px; height: 35px; fill: #fff; transition: fill 0.3s; }
-.float-wa:hover svg { fill: #25D366; }
+
+.float-wa:active {
+    cursor: grabbing;
+}
+
+.float-wa:hover { 
+    transform: scale(1.05); 
+    background-color: #fff; /* Hover jadi putih */
+    border-color: #000;
+}
+
+.float-wa svg { 
+    width: 35px; 
+    height: 35px; 
+    fill: #fff; /* Icon Putih */
+    transition: fill 0.3s; 
+}
+
+.float-wa:hover svg { 
+    fill: #000; /* Hover Icon Hitam */
+}
 
 /* Footer */
 footer {
@@ -419,7 +447,10 @@ footer a, footer div { pointer-events: auto; }
     .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .case-study-grid { grid-template-columns: 1fr; }
     footer { flex-direction: column; gap: 10px; text-align: center; background: #000; padding-bottom: 20px; position: static; pointer-events: auto; }
+    
+    /* Pada mobile, posisi awal WA tetap di pojok kanan bawah, tapi bisa dipindah */
     .float-wa { width: 50px; height: 50px; bottom: 20px; right: 20px; }
+    
     .menu-list { width: 100%; padding: 0 15px; }
     .close-modal { right: 10px; top: 10px; }
     .page-content { padding-top: 100px; padding-bottom: 20px; }

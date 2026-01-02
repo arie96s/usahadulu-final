@@ -1,408 +1,433 @@
-// js/main.js
-
-window.addEventListener('load', () => {
-    // Hide Preloader
-    const preloader = document.getElementById('preloader');
-    if(preloader) {
-        setTimeout(() => {
-            preloader.style.opacity = '0';
-            preloader.style.visibility = 'hidden';
-        }, 300); 
-    }
-    
-    // Inisialisasi Data
-    updateLanguageUI();
-    updateWALinks();
-    
-    const toggleBtn = document.getElementById('langToggle');
-    if(toggleBtn) toggleBtn.setAttribute('data-lang', siteData.currentLang);
-
-    // Highlight menu aktif
-    const currentPath = window.location.pathname.split("/").pop() || 'index.html';
-    const menuLinks = document.querySelectorAll('.menu-title');
-    menuLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href === currentPath) {
-            link.style.color = '#ffffff';
-            link.style.fontWeight = '900';
-            link.style.borderBottom = '1px solid #fff';
-        }
-    });
-
-    bindHoverEvents();
-    initDraggableWA(); // Pastikan fungsi ini dipanggil
-    
-    if (document.getElementById('dynamicServiceList')) renderServices();
-    if (document.getElementById('faqContent')) renderFAQ();
-    if (document.getElementById('portfolioGrid')) {
-        renderPortfolio('all');
-        renderFilters();
-    }
-    if (document.getElementById('paymentGatewayContainer')) renderOrderSummary(); 
-    if (document.getElementById('testimonialGrid')) {
-        renderTestimonials(); 
-        setupReviewStars(); 
-    }
-    if (document.getElementById('orderForm')) initOrderPage();
-});
-
-// LOGIC BAHASA
-window.toggleLanguage = function() {
-    siteData.currentLang = siteData.currentLang === 'id' ? 'en' : 'id';
-    localStorage.setItem('usahadulu_lang', siteData.currentLang);
-
-    const toggleBtn = document.getElementById('langToggle');
-    if(toggleBtn) toggleBtn.setAttribute('data-lang', siteData.currentLang);
-    
-    updateLanguageUI();
-    if(document.getElementById('dynamicServiceList')) renderServices();
-    if(document.getElementById('faqContent')) renderFAQ();
-    if(document.getElementById('paymentGatewayContainer')) renderOrderSummary();
-    updateWALinks();
+/* --- 1. RESET & BASIC SETUP --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; /* Custom cursor desktop */
+    -webkit-tap-highlight-color: transparent;
 }
 
-function updateLanguageUI() {
-    const lang = siteData.currentLang;
-    const t = siteData.translations[lang];
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (t[key]) el.innerHTML = t[key];
-    });
-    const aboutText = document.getElementById('aboutText');
-    if(aboutText) aboutText.innerHTML = t.about_desc;
+:root {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --accent-color: #333333;
+    --font-main: 'Inter', Helvetica, Arial, sans-serif;
+    --ease-smooth: cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
-// FIX: DRAGGABLE WA LOGIC (TOTAL REWRITE)
-function updateWALinks() {
-    const floatBtn = document.getElementById('waFloatBtn');
-    if(!floatBtn) return;
-    const lang = siteData.currentLang;
-    const phone = "6282283687565"; 
-    const msg = encodeURIComponent(lang === 'id' ? "Halo Admin, saya ingin bertanya jasa desain." : "Hello, I want to ask about design services.");
-    // Simpan link di data-href agar tidak tertrigger saat drag
-    floatBtn.setAttribute('data-href', `https://wa.me/${phone}?text=${msg}`);
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 60px;
 }
 
-function initDraggableWA() {
-    const el = document.getElementById('waFloatBtn');
-    if(!el) return;
+body.no-scroll { overflow: hidden; }
+a { text-decoration: none; color: inherit; cursor: none; }
+button { cursor: none; }
+ul { list-style: none; }
 
-    let isDragging = false;
-    let hasMoved = false;
-    let offsetX, offsetY;
-
-    const startDrag = (e) => {
-        // Hanya trigger klik kiri (mouse) atau touch
-        if (e.type === 'mousedown' && e.button !== 0) return;
-
-        isDragging = true;
-        hasMoved = false;
-
-        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
-        // Hitung posisi elemen saat ini
-        const rect = el.getBoundingClientRect();
-        
-        // Hitung selisih posisi mouse dengan pojok kiri atas elemen
-        offsetX = clientX - rect.left;
-        offsetY = clientY - rect.top;
-
-        // Ubah positioning dari fixed bottom/right menjadi top/left
-        el.style.bottom = 'auto';
-        el.style.right = 'auto';
-        el.style.left = rect.left + 'px';
-        el.style.top = rect.top + 'px';
-        el.style.cursor = 'grabbing';
-    };
-
-    const onDrag = (e) => {
-        if (!isDragging) return;
-        
-        // Mencegah scroll layar saat drag di HP
-        if(e.cancelable) e.preventDefault(); 
-        
-        hasMoved = true;
-
-        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
-        // Set posisi baru
-        el.style.left = (clientX - offsetX) + 'px';
-        el.style.top = (clientY - offsetY) + 'px';
-    };
-
-    const endDrag = () => {
-        if (!isDragging) return;
-        isDragging = false;
-        el.style.cursor = 'grab';
-    };
-
-    // Event Listeners
-    el.addEventListener('mousedown', startDrag);
-    document.addEventListener('mousemove', onDrag);
-    document.addEventListener('mouseup', endDrag);
-
-    el.addEventListener('touchstart', startDrag, { passive: false });
-    document.addEventListener('touchmove', onDrag, { passive: false });
-    document.addEventListener('touchend', endDrag);
-
-    // Click Handler (Hanya buka link jika tidak didrag)
-    el.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (!hasMoved) {
-            const url = el.getAttribute('data-href');
-            if(url) window.open(url, '_blank');
-        }
-    });
+/* --- 2. CUSTOM CURSOR --- */
+#cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    /* FIX: Hapus transition transform agar gerak realtime & mulus */
+    transition: width 0.2s, height 0.2s, background-color 0.2s; 
+    mix-blend-mode: difference; 
+    will-change: transform;
 }
 
-// CUSTOM CURSOR
-const cursor = document.getElementById('cursor');
-function bindHoverEvents() {
-    if(!cursor) return;
-    const hoverTargets = document.querySelectorAll('.hover-target, a, button, .menu-title, .social-icon-btn, input, select, textarea');
-    hoverTargets.forEach(target => {
-        target.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-        target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-    });
-}
-document.addEventListener('mousemove', (e) => {
-    if(cursor) {
-        cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
-    }
-});
-
-// FIX: ANIMASI LOGO (VARIABLE SCOPE CORRECTION)
-const menuBtn = document.getElementById('menuBtn');
-const navOverlay = document.getElementById('navOverlay');
-const mainHeader = document.getElementById('mainHeader');
-
-if(menuBtn) {
-    menuBtn.addEventListener('click', () => {
-        // Toggle Kelas
-        menuBtn.classList.toggle('active');
-        navOverlay.classList.toggle('open');
-        mainHeader.classList.toggle('menu-active');
-        document.body.classList.toggle('no-scroll');
-        
-        // Definisi ulang variabel di dalam scope agar selalu dapat elemen
-        const logoImg = document.getElementById('headerLogoImg');
-        
-        if (logoImg) {
-            // 1. Fade Out
-            logoImg.style.opacity = '0';
-            
-            // 2. Tunggu 300ms (sesuai css transition) lalu ganti src
-            setTimeout(() => {
-                // Cek apakah menu SEDANG terbuka atau tertutup
-                if (navOverlay.classList.contains('open')) {
-                    logoImg.src = 'img/logo_web.png';
-                } else {
-                    logoImg.src = 'img/logo_ambigram.png';
-                }
-                // 3. Fade In
-                logoImg.style.opacity = '1';
-            }, 300);
-        }
-    });
+#cursor.hovered {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: transparent;
 }
 
-// RENDER SERVICES
-function renderServices() {
-    const container = document.getElementById('dynamicServiceList');
-    if(!container) return;
-    container.innerHTML = '';
-    const lang = siteData.currentLang;
-    siteData.services.forEach(svc => {
-        const name = lang === 'id' ? svc.name_id : svc.name_en;
-        const desc = lang === 'id' ? svc.desc_id : svc.desc_en;
-        
-        let tableRows = '';
-        svc.packages.forEach(pkg => { 
-            const orderLink = `order.html?service=${encodeURIComponent(name)}&package=${encodeURIComponent(pkg.item)}&price=${encodeURIComponent(pkg.price)}`;
-            tableRows += `
-                <tr>
-                    <td>${pkg.item}</td>
-                    <td>${pkg.price}</td>
-                    <td style="text-align:right;">
-                        <a href="${orderLink}" class="mini-order-btn hover-target">ORDER</a>
-                    </td>
-                </tr>`; 
-        });
-        
-        const li = document.createElement('li');
-        li.className = 'service-wrapper';
-        li.innerHTML = `
-            <div class="service-header hover-target" onclick="this.classList.toggle('active'); this.nextElementSibling.style.maxHeight = this.classList.contains('active') ? this.nextElementSibling.scrollHeight + 'px' : null;">
-                <span class="service-name-main">${name}</span>
-                <span class="service-icon-state">▼</span>
-            </div>
-            <div class="service-body">
-                <p class="service-desc">${desc}</p>
-                <table class="price-table">${tableRows}</table>
-            </div>`;
-        container.appendChild(li);
-    });
-    bindHoverEvents();
+/* --- PRELOADER --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease, visibility 0.8s;
 }
 
-function renderFAQ() {
-    const container = document.getElementById('faqContent');
-    if(!container) return;
-    container.innerHTML = '';
-    const lang = siteData.currentLang;
-    siteData.faq.forEach(item => {
-        const q = lang === 'id' ? item.q_id : item.q_en;
-        const a = lang === 'id' ? item.a_id : item.a_en;
-        container.innerHTML += `<div class="faq-item"><span class="faq-q">${q}</span><span class="faq-a">${a}</span></div>`;
-    });
+.loader-logo { 
+    width: 120px;
+    max-width: 30vw;
+    height: auto;
+    animation: pulse 1.5s infinite; 
+    object-fit: contain;
 }
 
-// PORTFOLIO
-window.renderPortfolio = function(cat) {
-    const grid = document.getElementById('portfolioGrid');
-    if(!grid) return;
-    grid.innerHTML = '';
-    
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    
-    const items = cat === 'all' ? siteData.portfolio : siteData.portfolio.filter(i => i.category === cat);
-    items.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'portfolio-item hover-target';
-        let imgSrc = appConfig.useLocalImages ? ('img/' + item.fileName) : item.demoUrl;
-        div.onclick = () => openCaseStudy(item, imgSrc);
-        div.innerHTML = `<img src="${imgSrc}" loading="lazy"><div class="portfolio-tag">${item.category.toUpperCase()}</div>`;
-        grid.appendChild(div);
-    });
-    bindHoverEvents();
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.5; }
 }
 
-function renderFilters() {
-    const container = document.getElementById('filterContainer');
-    if(!container) return;
-    container.innerHTML = '<button class="filter-btn hover-target active" onclick="renderPortfolio(\'all\')">ALL</button>';
-    siteData.filters.forEach(c => {
-        container.innerHTML += `<button class="filter-btn hover-target" onclick="renderPortfolio('${c}')">${c.toUpperCase()}</button>`;
-    });
+/* --- 3. HEADER & TOGGLE --- */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+    transition: background 0.3s;
+}
+header.menu-active { background: #000; }
+
+.header-left { display: flex; align-items: center; gap: 20px; }
+
+/* FIX LOGO: Transisi opacity untuk efek smooth swap */
+.brand-logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease, opacity 0.3s ease; 
+    opacity: 1;
+}
+.brand-logo img:hover { transform: scale(1.05); }
+
+/* Language Switch */
+.lang-switch {
+    width: 60px;
+    height: 30px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    position: relative;
+    transition: background-color 0.3s ease, border 0.3s ease;
+    margin-right: 20px;
+}
+.lang-switch[data-lang="id"] { background-color: #ffffff; border: 1px solid #ffffff; }
+.lang-switch[data-lang="en"] { background-color: #000000; border: 1px solid #ffffff; }
+
+.lang-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    position: absolute;
+    transition: transform 0.3s cubic-bezier(0.45, 0.05, 0.55, 0.95), background-color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+.lang-switch[data-lang="id"] .lang-circle { transform: translateX(0); background-color: #000000; color: #fff; }
+.lang-switch[data-lang="id"] .lang-circle::after { content: "ID"; }
+.lang-switch[data-lang="en"] .lang-circle { transform: translateX(30px); background-color: #ffffff; color: #000; }
+.lang-switch[data-lang="en"] .lang-circle::after { content: "EN"; }
+
+/* Menu Button */
+.menu-btn { width: 30px; height: 20px; position: relative; z-index: 1001; }
+.menu-btn span {
+    display: block; width: 100%; height: 2px; background-color: var(--text-color);
+    position: absolute; transition: all 0.3s ease;
+}
+.menu-btn span:nth-child(1) { top: 0; }
+.menu-btn span:nth-child(2) { top: 9px; }
+.menu-btn span:nth-child(3) { top: 18px; }
+.menu-btn.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
+.menu-btn.active span:nth-child(2) { opacity: 0; }
+.menu-btn.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
+
+/* --- 4. NAVIGATION OVERLAY --- */
+.nav-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background-color: var(--bg-color);
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+    padding-top: 100px; padding-bottom: 50px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 999;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.nav-overlay.open { opacity: 1; pointer-events: auto; }
+
+.menu-list { text-align: center; width: 100%; max-width: 600px; padding: 0 20px; }
+.menu-item { border-bottom: none; padding: 15px 0; }
+
+.menu-title {
+    font-size: 24px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2px; transition: color 0.3s; display: block;
+}
+.menu-title:hover { color: #888; }
+
+/* FIX MAGOS: Putih bersih tanpa animasi horror */
+.magos-horror {
+    color: #fff !important;
+    text-shadow: none !important;
+    font-weight: 900 !important;
+    letter-spacing: 3px !important;
+    animation: none !important;
+    transition: color 0.3s;
+}
+.magos-horror:hover { color: #888 !important; }
+
+/* --- COMPONENTS: FAQ, SERVICES, ETC --- */
+.faq-wrapper { text-align: left; padding: 15px 10px; color: #ccc; }
+.faq-item { margin-bottom: 20px; border-bottom: 1px dashed #333; padding-bottom: 15px; }
+.faq-item:last-child { border-bottom: none; }
+.faq-q { color: #fff; font-weight: bold; font-size: 14px; margin-bottom: 5px; display: block; }
+.faq-a { font-size: 13px; line-height: 1.5; color: #888; }
+
+.service-wrapper { border-bottom: 1px dashed #333; margin-bottom: 5px; }
+.service-header {
+    display: flex; justify-content: space-between; padding: 15px 0;
+    font-size: 16px; color: #ccc; transition: color 0.3s; align-items: center;
+}
+.service-header:hover { color: #fff; }
+.service-header.active { color: #fff; font-weight: bold; }
+.service-icon-state { font-size: 12px; transition: transform 0.4s var(--ease-smooth); }
+.service-header.active .service-icon-state { transform: rotate(180deg); }
+
+.service-body {
+    max-height: 0; overflow: hidden; transition: max-height 0.6s var(--ease-smooth);
+    text-align: left; background: #0a0a0a;
+}
+.service-desc { font-size: 13px; color: #888; margin: 15px 10px; line-height: 1.6; font-style: italic; }
+
+.price-table { width: 100%; margin-bottom: 25px; border-collapse: collapse; background: #0a0a0a; }
+.price-table td { padding: 10px; font-size: 13px; border-bottom: 1px solid #222; }
+.price-table td:last-child { text-align: right; color: #fff; font-family: monospace; }
+.price-table td:first-child { color: #aaa; }
+.mini-order-btn { 
+    font-size: 10px; border: 1px solid #555; padding: 3px 8px; 
+    border-radius: 4px; color: #fff; background: #222; 
+}
+.mini-order-btn:hover { background: #fff; color: #000; }
+
+.service-action-btn {
+    display: inline-block; width: auto; min-width: 180px; padding: 12px 30px;
+    background: transparent; border: 1px solid #fff; color: #fff;
+    font-size: 12px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;
+    border-radius: 50px; transition: all 0.3s ease; margin-bottom: 25px;
+    text-align: center; position: relative; overflow: hidden; margin-top: 20px;
+}
+.service-action-btn:hover {
+    background: #fff; color: #000; box-shadow: 0 0 15px rgba(255,255,255,0.5); transform: translateY(-2px);
 }
 
-function openCaseStudy(item, imgSrc) {
-    const modal = document.getElementById('lightboxModal');
-    if(!modal) return;
-    const cs = item.caseStudy || { client: "-", problem: "-", solution: "-", result: "-" };
-    const contentHtml = `
-        <div class="modal-content case-study-content">
-            <div class="close-modal hover-target" onclick="closeLightboxOnly()">×</div>
-            <h2 class="modal-title">${item.title}</h2>
-            <div class="case-study-grid">
-                <div class="case-study-img"><img src="${imgSrc}" alt="${item.title}"></div>
-                <div class="case-study-details">
-                    <h3>CLIENT</h3><p>${cs.client}</p>
-                    <h3>PROBLEM</h3><p>${cs.problem}</p>
-                    <h3>SOLUTION</h3><p>${cs.solution}</p>
-                    <h3>RESULT</h3><p>${cs.result}</p>
-                    <a href="services.html" class="service-action-btn hover-target" style="margin-top:20px;">START PROJECT</a>
-                </div>
-            </div>
-        </div>`;
-    modal.innerHTML = contentHtml;
-    modal.classList.add('show');
-    bindHoverEvents();
+/* --- HERO SECTION --- */
+.hero {
+    position: relative; height: 100vh; width: 100%; overflow: hidden;
+    display: flex; justify-content: center; align-items: center;
+}
+.hero-slide {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+    opacity: 0; transition: opacity 1.5s ease-in-out; z-index: -1;
+}
+.hero-slide.active { opacity: 0.5; }
+.hero-content { z-index: 2; text-align: center; padding: 20px; }
+
+.hero-logo-img {
+    max-width: 350px; width: 80%; height: auto;
+    margin-bottom: 10px; 
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
 }
 
-window.closeLightboxOnly = function() {
-    const modal = document.getElementById('lightboxModal');
-    if(modal) modal.classList.remove('show');
+.hero-content p { 
+    font-family: var(--font-main);
+    font-size: 0.85rem; font-weight: 400; letter-spacing: 3px;
+    text-transform: uppercase; color: #ffffff; margin-bottom: 30px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
-// REVIEW & ORDER
-function setupReviewStars() {
-    const stars = document.querySelectorAll('.star-icon');
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            const val = parseInt(this.getAttribute('data-val'));
-            stars.forEach(s => {
-                const sVal = parseInt(s.getAttribute('data-val'));
-                if (sVal <= val) s.classList.add('active'); else s.classList.remove('active');
-            });
-            document.getElementById('reviewFormContainer').style.display = 'block';
-        });
-    });
+.cta-btn {
+    display: inline-block; padding: 15px 40px; background: transparent;
+    border: 1px solid #fff; color: #fff; font-size: 14px; font-weight: bold;
+    letter-spacing: 3px; text-transform: uppercase;
+    transition: all 0.3s ease; border-radius: 50px;
+}
+.cta-btn:hover { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+
+/* --- MODALS --- */
+.modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center;
+    z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.modal.show { opacity: 1; pointer-events: auto; }
+
+.modal-content.case-study-content {
+    background: #151515; border: 1px solid #333; width: 90%; max-width: 900px;
+    height: auto; max-height: 90vh; overflow-y: auto; padding: 30px;
+    border-radius: 12px; position: relative;
+}
+.case-study-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
+.case-study-img img { width: 100%; border-radius: 8px; border: 1px solid #333; }
+.case-study-details h3 { font-size: 14px; color: #888; text-transform: uppercase; margin-bottom: 5px; margin-top: 15px; }
+.case-study-details p { font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 15px; }
+
+.close-modal {
+    position: absolute; top: 15px; right: 20px; width: 35px; height: 35px;
+    background-color: #222; color: #fff; border-radius: 50%;
+    display: flex; justify-content: center; align-items: center; font-size: 20px;
+    border: 1px solid #333; cursor: pointer; transition: all 0.3s; z-index: 2001; 
+}
+.close-modal:hover { background-color: #fff; color: #000; transform: rotate(90deg); }
+.modal-title { font-size: 24px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; color: #fff; }
+
+/* --- PORTFOLIO & FILTER --- */
+.filter-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+.filter-btn {
+    background: transparent; border: 1px solid #444; color: #888;
+    padding: 8px 16px; border-radius: 20px; font-size: 12px;
+    letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s;
+}
+.filter-btn:hover, .filter-btn.active { background: #fff; color: #000; border-color: #fff; }
+
+.portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding-bottom: 20px; }
+.portfolio-item {
+    background: #222; border-radius: 8px; overflow: hidden; aspect-ratio: 1 / 1;
+    opacity: 0; transform: translateY(20px); animation: fadeInGrid 0.5s forwards; position: relative;
+}
+.portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s, filter 0.3s; }
+.portfolio-item:hover img { transform: scale(1.1); filter: brightness(1.2); }
+.portfolio-tag {
+    position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7);
+    padding: 3px 8px; font-size: 10px; border-radius: 4px; backdrop-filter: blur(2px); color: #fff;
+}
+@keyframes fadeInGrid { to { opacity: 1; transform: translateY(0); } }
+
+/* --- PAGE CONTENT --- */
+.page-content {
+    padding-top: 120px; padding-bottom: 50px;
+    padding-left: 20px; padding-right: 20px;
+    max-width: 1000px; margin: 0 auto; min-height: 80vh;
+}
+.page-title {
+    text-align: center; font-size: 32px; font-weight: 900; margin-bottom: 40px;
+    letter-spacing: 2px; color: #fff; text-transform: uppercase;
+    border-bottom: 1px dashed #333; padding-bottom: 20px;
 }
 
-function renderTestimonials() {
-    const grid = document.getElementById('testimonialGrid');
-    if(!grid) return;
-    grid.innerHTML = '';
-    siteData.testimonials.forEach(t => {
-        grid.innerHTML += `<div class="testi-card"><div class="testi-quote">${t.quote}</div><span class="testi-author">${t.name}</span><span class="testi-brand">${t.brand}</span></div>`;
-    });
+.process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 30px; margin-bottom: 50px;}
+.process-card { background: #111; border: 1px dashed #333; padding: 25px; border-radius: 12px; position: relative; transition: all 0.3s; }
+.process-card:hover { border-color: #fff; transform: translateY(-5px); background: #151515; }
+.step-number { position: absolute; top: -10px; right: 10px; font-size: 60px; font-weight: 900; color: #222; }
+.process-info { position: relative; z-index: 1; }
+.process-title { font-size: 16px; font-weight: bold; color: #fff; text-transform: uppercase; margin-bottom: 10px; }
+.process-desc { font-size: 13px; color: #888; line-height: 1.6; }
+
+.order-form-container, .summary-card { max-width: 600px; margin: 0 auto; background: #0a0a0a; padding: 30px; border-radius: 12px; border: 1px solid #222; }
+.form-group { margin-bottom: 20px; text-align: left; }
+.form-group label { display: block; font-size: 11px; color: #888; margin-bottom: 8px; text-transform: uppercase; font-weight: bold; }
+.form-input { width: 100%; background: #111; border: 1px solid #333; padding: 12px 15px; color: #ccc; border-radius: 6px; font-family: var(--font-main); font-size: 14px; }
+.form-input:focus { border-color: #fff; outline: none; color: #fff; }
+.form-input.readonly { background: #1a1a1a; border-color: #222; color: #666; cursor: not-allowed; }
+.submit-order-btn, .payment-gateway-trigger { width: 100%; padding: 15px; background: #fff; color: #000; font-weight: 900; border: none; border-radius: 6px; text-transform: uppercase; margin-top: 10px; transition: all 0.3s; cursor: pointer; }
+.submit-order-btn:hover, .payment-gateway-trigger:hover { background: #ccc; transform: translateY(-2px); }
+.payment-gateway-trigger { background: #005ce6; color: #fff; }
+.payment-gateway-trigger:hover { background: #0046b0; }
+
+.summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; color: #aaa; }
+.summary-row strong { color: #fff; text-align: right; }
+.summary-row.total { border-top: 1px solid #333; padding-top: 10px; margin-top: 10px; font-size: 16px; color: #fff; }
+
+.review-input-section { background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #333; margin-bottom: 30px; text-align: center; }
+.star-rating-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; font-size: 30px; }
+.star-icon { color: #444; transition: color 0.2s, transform 0.2s; cursor: pointer; }
+.star-icon:hover, .star-icon.active { color: #ffd700; transform: scale(1.2); }
+.review-form-container { display: none; margin-top: 20px; text-align: left; animation: slideDown 0.5s ease; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.review-input { width: 100%; background: #000; border: 1px solid #444; padding: 12px; color: #fff; margin-bottom: 15px; border-radius: 6px; }
+.submit-review-btn { width: 100%; padding: 12px; background: #fff; color: #000; font-weight: bold; border: none; border-radius: 6px; text-transform: uppercase; }
+.testimonial-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; text-align: left; }
+.testi-card { background: #222; padding: 25px; border: 1px dashed #444; border-radius: 8px; transition: transform 0.3s; }
+.testi-card:hover { transform: translateY(-5px); border-color: #fff; }
+.testi-quote { font-style: italic; font-size: 13px; color: #ccc; margin-bottom: 15px; line-height: 1.6; position: relative; }
+.testi-quote::before { content: '“'; font-size: 30px; color: #555; position: absolute; left: -15px; top: -15px; }
+.testi-author { font-weight: bold; color: #fff; font-size: 14px; margin-top: 10px; display: block;}
+.testi-brand { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; display: block; margin-top: 2px; }
+
+.xendit-modal-body { background: #fff; color: #000; padding: 0; border-radius: 8px; max-width: 450px; text-align: left; overflow: hidden; width: 90%; }
+.x-header { background: #f8f8f8; padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+.x-logo { font-weight: 900; font-size: 18px; color: #000; letter-spacing: -1px; }
+.x-amount { color: #005ce6; font-weight: bold; font-size: 16px; }
+.x-content { padding: 20px; }
+.x-label { font-size: 12px; color: #666; margin-bottom: 10px; display: block; font-weight: bold; }
+.x-option { border: 1px solid #ddd; padding: 15px; border-radius: 6px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; }
+.x-option:hover { border-color: #005ce6; background: #f0f7ff; }
+.x-icon { width: 40px; height: 25px; background: #eee; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 10px; font-weight: bold; color: #555; }
+.x-footer { padding: 15px 20px; background: #f8f8f8; text-align: center; font-size: 10px; color: #aaa; }
+
+/* FIX WA: Posisi fix bottom 90px agar tidak menimpa Footer */
+.float-wa {
+    position: fixed; 
+    bottom: 90px; /* Jarak aman dari bawah */
+    right: 30px; 
+    width: 60px; 
+    height: 60px;
+    background-color: #000;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.2); 
+    transition: transform 0.3s, background-color 0.3s;
 }
 
-window.submitReview = function() {
-    alert("Terima kasih! Ulasan Anda telah diposting (Simulasi).");
-    document.getElementById('reviewFormContainer').style.display = 'none';
+.float-wa:hover { 
+    transform: scale(1.05); 
+    background-color: #fff; 
+    border-color: #000;
 }
 
-function initOrderPage() {
-    const urlParams = new URLSearchParams(window.location.search);
-    document.getElementById('orderService').value = urlParams.get('service') || '-';
-    document.getElementById('orderPackage').value = urlParams.get('package') || '-';
-    document.getElementById('orderPrice').value = urlParams.get('price') || 'TBD';
+.float-wa svg { 
+    width: 35px; height: 35px; fill: #fff; transition: fill 0.3s; 
 }
 
-window.submitOrder = function() {
-    const name = document.getElementById('clientName').value;
-    const phone = document.getElementById('clientPhone').value;
-    const service = document.getElementById('orderService').value;
-    const pkg = document.getElementById('orderPackage').value;
-    const price = document.getElementById('orderPrice').value;
+.float-wa:hover svg { fill: #000; }
 
-    if(!name || !phone) { alert("Harap lengkapi Nama dan No WA!"); return; }
-    const orderData = { name, phone, service, pkg, price };
-    localStorage.setItem('currentOrder', JSON.stringify(orderData));
-    alert("Invoice Created! Redirecting to Payment...");
-    setTimeout(() => { window.location.href = "payment.html"; }, 500);
-};
-
-function renderOrderSummary() {
-    const container = document.getElementById('paymentGatewayContainer');
-    const data = JSON.parse(localStorage.getItem('currentOrder'));
-    if(!data) {
-        container.innerHTML = '<p style="text-align:center; color:#888;">Belum ada pesanan aktif.</p><div style="text-align:center; margin-top:20px;"><a href="services.html" class="service-action-btn">LIHAT LAYANAN</a></div>';
-        return;
-    }
-    container.innerHTML = `
-        <div class="summary-card">
-            <h3 class="summary-title">RINGKASAN PESANAN</h3>
-            <div class="summary-row"><span>Nama:</span> <strong>${data.name}</strong></div>
-            <div class="summary-row"><span>Paket:</span> <strong>${data.service} (${data.pkg})</strong></div>
-            <div class="summary-row total"><span>TOTAL:</span> <strong>${data.price}</strong></div>
-        </div>
-        <button class="payment-gateway-trigger hover-target" onclick="openXenditDemo('${data.price}')">
-            ${siteData.currentLang === 'id' ? 'BAYAR VIA XENDIT (QRIS/PAYPAL)' : 'PAY VIA XENDIT (QRIS/PAYPAL)'}
-        </button>
-    `;
-    bindHoverEvents();
+footer {
+    position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px 30px;
+    background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+    display: flex; justify-content: space-between; align-items: center; z-index: 100;
+    font-size: 12px; color: #888; pointer-events: none;
 }
+footer a, footer div { pointer-events: auto; }
+.footer-links a { margin-left: 15px; color: #666; font-size: 11px; text-transform: uppercase; }
+.footer-links a:hover { color: #fff; }
 
-window.openXenditDemo = function(price) {
-    const modal = document.getElementById('lightboxModal');
-    const html = `
-        <div class="modal-content xendit-modal-body">
-            <div class="x-header"><span class="x-logo">xendit</span><span class="x-amount">${price}</span></div>
-            <div class="x-content">
-                <span class="x-label">VIRTUAL ACCOUNT (Demo)</span>
-                <span class="x-label">QR CODE</span>
-                <div class="x-option hover-target" onclick="alert('Redirecting to QRIS...')"><div class="x-icon">QRIS</div><div class="x-name">QRIS (GoPay, OVO)</div></div>
-                <span class="x-label">E-WALLET / GLOBAL</span>
-                <div class="x-option hover-target" onclick="alert('Redirecting to PayPal...')"><div class="x-icon">PP</div><div class="x-name">PayPal International</div></div>
-            </div>
-            <div class="x-footer">Powered by Xendit Payment Gateway (Demo Mode)</div>
-            <button onclick="closeLightboxOnly()" style="width:100%; padding:15px; background:#f0f0f0; border:none; cursor:pointer; font-weight:bold;">CANCEL</button>
-        </div>`;
-    modal.innerHTML = html;
-    modal.classList.add('show');
+@media (max-width: 768px) {
+    #cursor { display: none !important; }
+    * { cursor: auto !important; }
+    .brand-logo img { height: 40px; }
+    .hero-logo-img { max-width: 250px; }
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .case-study-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 10px; text-align: center; background: #000; padding-bottom: 20px; position: static; pointer-events: auto; }
+    /* WA Float: Tetap 90px di mobile */
+    .float-wa { width: 50px; height: 50px; bottom: 90px; right: 20px; }
+    .menu-list { width: 100%; padding: 0 15px; }
+    .close-modal { right: 10px; top: 10px; }
+    .page-content { padding-top: 100px; padding-bottom: 20px; }
 }

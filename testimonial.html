@@ -1,9 +1,16 @@
+{
+type: uploaded file
+fileName: testimonial.html
+fullContent:
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USAHADULU | Reviews</title>
+    <title>USAHADULU | Clients</title>
+    <meta name="description" content="Testimoni klien USAHADULU. Review jujur dari pelanggan kami.">
+    <meta property="og:image" content="img/logo_ambigram.png">
+    <link rel="icon" type="image/png" href="img/logo_ambigram.png">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
@@ -31,7 +38,8 @@
             <li class="menu-item"><a href="payment.html" class="menu-title hover-target" data-i18n="nav_payment">PAYMENT METHODS</a></li>
             <li class="menu-item"><a href="testimonial.html" class="menu-title hover-target" data-i18n="nav_testimonials">TESTIMONIALS</a></li>
             <li class="menu-item"><a href="faq.html" class="menu-title hover-target" data-i18n="nav_faq">FAQ / Q&A</a></li>
-            <li class="menu-item"><a href="https://arie96s.github.io/magosstreetwear" target="_blank" class="menu-title hover-target">MAGOS STREETWEAR</a></li>
+            <li class="menu-item"><a href="term_condition.html" class="menu-title hover-target" data-i18n="nav_terms">TERMS & CONDITIONS</a></li>
+            <li class="menu-item"><a href="https://arie96s.github.io/magosstreetwear" target="_blank" class="menu-title hover-target magos-horror">MAGOS STREETWEAR</a></li>
             <li class="menu-item"><a href="about.html" class="menu-title hover-target" data-i18n="nav_about">ABOUT US</a></li>
         </ul>
     </div>
@@ -40,28 +48,36 @@
         <h1 class="page-title" data-i18n="nav_testimonials">CLIENTS & REVIEWS</h1>
         
         <div class="review-input-section">
-            <span style="font-size:12px; color:#888;">BERIKAN PENILAIAN ANDA</span>
-            <div class="star-rating-container" id="starRatingContainer">
+            <h3 style="margin-bottom:10px; font-size:14px; color:#fff;">BERIKAN ULASAN ANDA</h3>
+            <div class="star-rating-container">
                 <span class="star-icon hover-target" data-val="1">★</span>
                 <span class="star-icon hover-target" data-val="2">★</span>
                 <span class="star-icon hover-target" data-val="3">★</span>
                 <span class="star-icon hover-target" data-val="4">★</span>
                 <span class="star-icon hover-target" data-val="5">★</span>
             </div>
+            
             <div class="review-form-container" id="reviewFormContainer">
-                <input type="text" id="reviewName" class="review-input hover-target" placeholder="Nama Anda">
-                <input type="text" id="reviewType" class="review-input hover-target" placeholder="Jenis Order / Brand">
-                <textarea id="reviewComment" class="review-input hover-target" rows="3" placeholder="Ulasan..."></textarea>
-                <button class="submit-review-btn hover-target" onclick="submitReview()">POST REVIEW</button>
+                <input type="text" id="reviewName" class="review-input" placeholder="Nama Anda">
+                <input type="text" id="reviewType" class="review-input" placeholder="Jenis Order (Misal: Logo)">
+                <textarea id="reviewComment" class="review-input" rows="3" placeholder="Tulis pengalaman Anda..."></textarea>
+                <button class="submit-review-btn hover-target" onclick="submitReview()">KIRIM ULASAN</button>
             </div>
         </div>
 
         <div class="testimonial-grid" id="testimonialGrid"></div>
     </div>
 
-    <footer><div class="copyright">&copy; 2025 USAHADULU.COM.</div></footer>
+    <footer>
+        <div class="copyright">&copy; 2025 USAHADULU.COM.</div>
+        <div class="footer-links">
+            <a href="term_condition.html">Terms</a>
+            <a href="term_condition.html">Privacy</a>
+        </div>
+    </footer>
 
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
+}

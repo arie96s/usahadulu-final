@@ -1,3 +1,7 @@
+{
+type: uploaded file
+fileName: data.js
+fullContent:
 // js/data.js
 
 const appConfig = {
@@ -18,12 +22,12 @@ const siteData = {
             nav_about: "TENTANG",
             nav_faq: "TANYA JAWAB (FAQ)",
             nav_payment: "METODE PEMBAYARAN",
+            nav_terms: "SYARAT & KETENTUAN",
             hero_cta: "MULAI PROYEK",
             hero_tagline: "SOLUSI VISUAL PROFESIONAL UNTUK IDENTITAS BRAND ANDA",
             about_title: "TENTANG KAMI",
             payment_title: "CHECKOUT & PEMBAYARAN",
-            pay_instruct_title: "INSTRUKSI PEMBAYARAN:",
-            pay_instruct_text: "Silakan transfer sesuai nominal di Ringkasan Order, lalu upload bukti transfer di bawah.",
+            pay_gateway_btn: "BAYAR SEKARANG (XENDIT/QRIS)",
             
             // --- COPYWRITING BARU (INDONESIA) ---
             about_desc: `
@@ -38,7 +42,12 @@ const siteData = {
             order_prefix: "Halo Admin USAHADULU, saya tertarik order ",
             filter_all: "SEMUA",
             price_start: "Mulai",
-            btn_order_now: "ORDER SEKARANG"
+            btn_order_now: "ORDER SEKARANG",
+            
+            // Terms
+            terms_title: "SYARAT & KETENTUAN LAYANAN",
+            privacy_title: "KEBIJAKAN PRIVASI",
+            terms_intro: "Dengan menggunakan layanan USAHADULU, Anda menyetujui poin-poin berikut:"
         },
         en: {
             nav_services: "SERVICES",
@@ -48,12 +57,12 @@ const siteData = {
             nav_about: "ABOUT",
             nav_faq: "FAQ / Q&A",
             nav_payment: "PAYMENT METHODS",
+            nav_terms: "TERMS & CONDITIONS",
             hero_cta: "START PROJECT",
             hero_tagline: "PROFESSIONAL VISUAL SOLUTIONS FOR YOUR BRAND IDENTITY",
             about_title: "ABOUT US",
             payment_title: "CHECKOUT & PAYMENT",
-            pay_instruct_title: "PAYMENT INSTRUCTION:",
-            pay_instruct_text: "Please transfer the amount shown in Order Summary, then upload the proof below.",
+            pay_gateway_btn: "PAY NOW (XENDIT/PAYPAL)",
             
             // --- COPYWRITING BARU (ENGLISH) ---
             about_desc: `
@@ -68,7 +77,12 @@ const siteData = {
             order_prefix: "Hello Admin USAHADULU, I'm interested in ordering ",
             filter_all: "ALL",
             price_start: "Start from",
-            btn_order_now: "ORDER NOW"
+            btn_order_now: "ORDER NOW",
+            
+            // Terms
+            terms_title: "TERMS OF SERVICE",
+            privacy_title: "PRIVACY POLICY",
+            terms_intro: "By using USAHADULU services, you agree to the following points:"
         }
     },
     faq: [
@@ -92,9 +106,9 @@ const siteData = {
         },
         {
             q_id: "Sistem Pembayaran?",
-            a_id: "Wajib DP 50% di awal. Pelunasan dilakukan setelah preview desain disetujui, sebelum pengiriman file master.",
+            a_id: "Wajib DP 50% via Xendit/QRIS di awal. Pelunasan dilakukan setelah preview desain disetujui.",
             q_en: "Payment System?",
-            a_en: "50% Down Payment required upfront. Full payment is made after design preview approval, before master file delivery."
+            a_en: "50% Down Payment required upfront via Xendit/PayPal. Full payment after design preview approval."
         }
     ],
     services: [
@@ -170,10 +184,44 @@ const siteData = {
         },
     ],
     
+    // INTEGRASI CASE STUDY DI SINI
     portfolio: [
-        { category: 'logo', title: 'NEON CYBERPUNK LOGO', fileName: 'logo_cyberpunk.jpg', demoUrl: 'https://images.unsplash.com/photo-1571120038865-c35012e1284a?auto=format&fit=crop&w=500&q=60' },
-        { category: 'apparel', title: 'MAGOS STREETWEAR V1', fileName: 'magos_v1.jpg', demoUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=60' },
-        { category: 'flyer', title: 'METAL BAND POSTER', fileName: 'poster_metal.jpg', demoUrl: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=500&q=60' },
+        { 
+            category: 'logo', 
+            title: 'NEON CYBERPUNK LOGO', 
+            fileName: 'logo_cyberpunk.jpg', 
+            demoUrl: 'https://images.unsplash.com/photo-1571120038865-c35012e1284a?auto=format&fit=crop&w=500&q=60',
+            caseStudy: {
+                client: "CyberCafe Jakarta",
+                problem: "Klien membutuhkan logo yang futuristik untuk cafe gaming baru.",
+                solution: "Menggunakan palet warna neon dan font glitch modern.",
+                result: "Brand awareness meningkat 30% di kalangan gamer lokal."
+            }
+        },
+        { 
+            category: 'apparel', 
+            title: 'MAGOS STREETWEAR V1', 
+            fileName: 'magos_v1.jpg', 
+            demoUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=60',
+            caseStudy: {
+                client: "MAGOS Streetwear",
+                problem: "Ingin desain yang dark tapi tetap estetik untuk pasar anak muda.",
+                solution: "Ilustrasi tengkorak dengan style line-art minimalis.",
+                result: "Best seller item pada peluncuran bulan Oktober."
+            }
+        },
+        { 
+            category: 'flyer', 
+            title: 'METAL BAND POSTER', 
+            fileName: 'poster_metal.jpg', 
+            demoUrl: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=500&q=60',
+            caseStudy: {
+                client: "Purgatory Band",
+                problem: "Poster gig underground yang harus terlihat 'brutal' namun info terbaca.",
+                solution: "Tipografi distress dikombinasikan dengan layout asimetris.",
+                result: "Tiket presale sold out dalam 3 hari."
+            } 
+        },
         { category: 'art', title: 'DARK ARTS ILLUSTRATION', fileName: 'dark_art.jpg', demoUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=60' },
         { category: 'logo', title: 'VINTAGE TYPOGRAPHY', fileName: 'logo_vintage.jpg', demoUrl: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=500&q=60' },
         { category: 'web', title: 'RETRO WAVE WEBSITE', fileName: 'web_retro.jpg', demoUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=60' },
@@ -190,18 +238,7 @@ const siteData = {
         { name: "Rian Ardiansyah", brand: "Street Rebels", quote: "Sudah 3x order desain kaos di sini. Selalu puas sama hasilnya. Konsep metalnya orisinil." },
         { name: "Putri Anggraini", brand: "Wedding Client", quote: "Undangan digitalnya elegan dan smooth banget animasinya. Tamu-tamu pada suka!" }
     ],
-    payments: [
-        { cat: "BANK HIMBARA (STATE-OWNED)", type: "MANDIRI", number: "108-000-xxxx-xxx", holder: "Ariezona Creative" },
-        { cat: "BANK HIMBARA (STATE-OWNED)", type: "BRI", number: "5371-01-xxxxxx-53-x", holder: "Ariezona Creative" },
-        { cat: "BANK HIMBARA (STATE-OWNED)", type: "BNI", number: "098-xxxx-xxx", holder: "Ariezona Creative" },
-        { cat: "PRIVATE BANK (CONVENTIONAL)", type: "BCA", number: "8000-xxxx-xx", holder: "Ariezona Creative" },
-        { cat: "DIGITAL BANK", type: "BANK JAGO", number: "1092-xxxx-xxxx", holder: "Ariezona Creative" },
-        { cat: "DIGITAL BANK", type: "SEABANK", number: "9019-xxxx-xxxx", holder: "Ariezona Creative" },
-        { cat: "E-WALLET", type: "DANA", number: "0822-8368-7565", holder: "Ariezona Creative" },
-        { cat: "E-WALLET", type: "GOPAY", number: "0822-8368-7565", holder: "Ariezona Creative" },
-        { cat: "E-WALLET", type: "OVO", number: "0822-8368-7565", holder: "Ariezona Creative" },
-        { cat: "E-WALLET", type: "SHOPEEPAY", number: "0822-8368-7565", holder: "Ariezona Creative" },
-        { cat: "QRIS", type: "ALL PAYMENT", number: "SCAN", holder: "Ariezona Creative" },
-        { cat: "INTERNATIONAL", type: "PAYPAL", number: "paypal.me/arie96s", holder: "Ariezona Creative" }
-    ]
+    // Only keeping QRIS & Paypal for Xendit Sim
+    payments: [] 
 };
+}

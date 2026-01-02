@@ -100,7 +100,7 @@ header.menu-active { background: #000; }
 
 .header-left { display: flex; align-items: center; gap: 20px; }
 
-/* FIX LOGO: Pastikan transisi opacity aktif */
+/* FIX LOGO: Transisi opacity untuk efek smooth swap */
 .brand-logo img {
     height: 40px;
     width: auto;
@@ -377,28 +377,23 @@ header.menu-active { background: #000; }
 .x-icon { width: 40px; height: 25px; background: #eee; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 10px; font-weight: bold; color: #555; }
 .x-footer { padding: 15px 20px; background: #f8f8f8; text-align: center; font-size: 10px; color: #aaa; }
 
-/* FIX WA: Tambah touch-action none agar tidak scroll saat didrag */
+/* FIX WA: Posisi fix bottom 90px agar tidak menimpa Footer */
 .float-wa {
     position: fixed; 
-    bottom: 30px; 
+    bottom: 90px; /* Jarak aman dari bawah */
     right: 30px; 
     width: 60px; 
     height: 60px;
-    background-color: #000; /* Hitam */
-    border: 2px solid #fff; /* Putih */
+    background-color: #000;
+    border: 2px solid #fff;
     border-radius: 50%;
     display: flex; 
     justify-content: center; 
     align-items: center; 
     z-index: 9999;
     box-shadow: 0 4px 15px rgba(255,255,255,0.2); 
-    /* FIX: Hapus transition transform agar drag instant */
-    transition: background-color 0.3s; 
-    cursor: grab;
-    touch-action: none; /* PENTING: Mencegah scroll layar di HP saat drag */
+    transition: transform 0.3s, background-color 0.3s;
 }
-
-.float-wa:active { cursor: grabbing; }
 
 .float-wa:hover { 
     transform: scale(1.05); 
@@ -430,7 +425,8 @@ footer a, footer div { pointer-events: auto; }
     .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .case-study-grid { grid-template-columns: 1fr; }
     footer { flex-direction: column; gap: 10px; text-align: center; background: #000; padding-bottom: 20px; position: static; pointer-events: auto; }
-    .float-wa { width: 50px; height: 50px; bottom: 20px; right: 20px; }
+    /* WA Float: Tetap 90px di mobile */
+    .float-wa { width: 50px; height: 50px; bottom: 90px; right: 20px; }
     .menu-list { width: 100%; padding: 0 15px; }
     .close-modal { right: 10px; top: 10px; }
     .page-content { padding-top: 100px; padding-bottom: 20px; }

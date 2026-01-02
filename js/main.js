@@ -2,6 +2,7 @@
 
 // 1. FUNGSI INISIALISASI
 window.addEventListener('load', () => {
+    // Hide Preloader
     const preloader = document.getElementById('preloader');
     if(preloader) {
         setTimeout(() => {
@@ -10,12 +11,15 @@ window.addEventListener('load', () => {
         }, 300); 
     }
     
+    // Inisialisasi Data
     updateLanguageUI();
     updateWALinks();
     
+    // Set tombol bahasa aktif
     const toggleBtn = document.getElementById('langToggle');
     if(toggleBtn) toggleBtn.setAttribute('data-lang', siteData.currentLang);
 
+    // Highlight menu aktif
     const currentPath = window.location.pathname.split("/").pop() || 'index.html';
     const menuLinks = document.querySelectorAll('.menu-title');
     menuLinks.forEach(link => {
@@ -29,6 +33,7 @@ window.addEventListener('load', () => {
 
     bindHoverEvents();
     
+    // Render Halaman
     if (document.getElementById('dynamicServiceList')) renderServices();
     if (document.getElementById('faqContent')) renderFAQ();
     if (document.getElementById('portfolioGrid')) {
@@ -40,7 +45,6 @@ window.addEventListener('load', () => {
     }
     if (document.getElementById('testimonialGrid')) {
         renderTestimonials(); 
-        loadLocalReviews();   
         setupReviewStars(); 
     }
     if (document.getElementById('orderForm')) {
@@ -49,7 +53,7 @@ window.addEventListener('load', () => {
 });
 
 // 2. LOGIC BAHASA
-function toggleLanguage() {
+window.toggleLanguage = function() {
     siteData.currentLang = siteData.currentLang === 'id' ? 'en' : 'id';
     localStorage.setItem('usahadulu_lang', siteData.currentLang);
 
@@ -59,6 +63,7 @@ function toggleLanguage() {
     updateLanguageUI();
     if(document.getElementById('dynamicServiceList')) renderServices();
     if(document.getElementById('faqContent')) renderFAQ();
+    if(document.getElementById('paymentGatewayContainer')) renderOrderSummary();
     updateWALinks();
 }
 
@@ -69,17 +74,18 @@ function updateLanguageUI() {
         const key = el.getAttribute('data-i18n');
         if (t[key]) el.innerHTML = t[key];
     });
+    // Khusus konten About yang panjang
     const aboutText = document.getElementById('aboutText');
     if(aboutText) aboutText.innerHTML = t.about_desc;
 }
 
-// 3. LOGIC WHATSAPP (Diupdate agar ada di semua page)
+// 3. LOGIC WHATSAPP
 function updateWALinks() {
     const floatBtn = document.getElementById('waFloatBtn');
     if(!floatBtn) return;
     const lang = siteData.currentLang;
     const phone = "6282283687565"; 
-    const msg = encodeURIComponent(lang === 'id' ? "Halo, saya ingin bertanya jasa desain." : "Hello, I want to ask about design services.");
+    const msg = encodeURIComponent(lang === 'id' ? "Halo Admin, saya ingin bertanya jasa desain." : "Hello, I want to ask about design services.");
     floatBtn.href = `https://wa.me/${phone}?text=${msg}`;
 }
 
@@ -93,10 +99,10 @@ function bindHoverEvents() {
         target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
     });
 }
+// Optimasi performance cursor menggunakan transform
 document.addEventListener('mousemove', (e) => {
     if(cursor) {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
+        cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
     }
 });
 
@@ -105,19 +111,20 @@ const menuBtn = document.getElementById('menuBtn');
 const navOverlay = document.getElementById('navOverlay');
 const mainHeader = document.getElementById('mainHeader');
 
-function toggleMenu() {
-    if(!menuBtn) return;
-    menuBtn.classList.toggle('active');
-    navOverlay.classList.toggle('open');
-    mainHeader.classList.toggle('menu-active');
-    document.body.classList.toggle('no-scroll');
-    
-    const logoImg = document.getElementById('headerLogoImg');
-    if (logoImg) {
-        logoImg.src = navOverlay.classList.contains('open') ? 'img/logo_web.png' : 'img/logo_ambigram.png';
-    }
+if(menuBtn) {
+    menuBtn.addEventListener('click', () => {
+        menuBtn.classList.toggle('active');
+        navOverlay.classList.toggle('open');
+        mainHeader.classList.toggle('menu-active');
+        document.body.classList.toggle('no-scroll');
+        
+        const logoImg = document.getElementById('headerLogoImg');
+        if (logoImg) {
+            // Ganti logo jadi putih/hitam jika perlu, atau tetap sama
+            logoImg.style.opacity = navOverlay.classList.contains('open') ? '0.5' : '1';
+        }
+    });
 }
-if(menuBtn) menuBtn.addEventListener('click', toggleMenu);
 
 // 6. RENDER SERVICES
 function renderServices() {
@@ -171,19 +178,23 @@ function renderFAQ() {
 }
 
 // 7. PORTFOLIO & CASE STUDY
-function renderPortfolio(cat) {
+window.renderPortfolio = function(cat) {
     const grid = document.getElementById('portfolioGrid');
     if(!grid) return;
     grid.innerHTML = '';
+    
+    // Update active filter button
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    // (Logic simple untuk highlight button, bisa dikembangkan lagi)
+    
     const items = cat === 'all' ? siteData.portfolio : siteData.portfolio.filter(i => i.category === cat);
     items.forEach(item => {
         const div = document.createElement('div');
         div.className = 'portfolio-item hover-target';
-        let imgSrc = item.fileName; 
-        if(!imgSrc.includes('http')) imgSrc = 'img/' + imgSrc; 
-        else imgSrc = item.demoUrl; 
         
-        // Pass item object to openCaseStudy
+        // Logika Gambar: Gunakan demoUrl jika useLocalImages false
+        let imgSrc = appConfig.useLocalImages ? ('img/' + item.fileName) : item.demoUrl;
+        
         div.onclick = () => openCaseStudy(item, imgSrc);
         div.innerHTML = `<img src="${imgSrc}" loading="lazy"><div class="portfolio-tag">${item.category.toUpperCase()}</div>`;
         grid.appendChild(div);
@@ -200,13 +211,12 @@ function renderFilters() {
     });
 }
 
-// 8. CASE STUDY MODAL LOGIC
 function openCaseStudy(item, imgSrc) {
     const modal = document.getElementById('lightboxModal');
     if(!modal) return;
     
-    // Default data if no case study info
-    const cs = item.caseStudy || { client: "-", problem: "-", solution: "-", result: "-" };
+    // Default data jika case study tidak ada
+    const cs = item.caseStudy || { client: "-", problem: "Information not available.", solution: "-", result: "-" };
     
     const contentHtml = `
         <div class="modal-content case-study-content">
@@ -236,25 +246,22 @@ function openCaseStudy(item, imgSrc) {
         </div>
     `;
     
-    // Replace content inside modal
     modal.innerHTML = contentHtml;
     modal.classList.add('show');
     bindHoverEvents();
 }
 
-function closeLightboxOnly() {
+window.closeLightboxOnly = function() {
     const modal = document.getElementById('lightboxModal');
     if(modal) modal.classList.remove('show');
 }
 
-// 9. REVIEW SYSTEM
-let currentRating = 0;
+// 8. REVIEW SYSTEM
 function setupReviewStars() {
     const stars = document.querySelectorAll('.star-icon');
     stars.forEach(star => {
         star.addEventListener('click', function() {
             const val = parseInt(this.getAttribute('data-val'));
-            currentRating = val;
             stars.forEach(s => {
                 const sVal = parseInt(s.getAttribute('data-val'));
                 if (sVal <= val) s.classList.add('active');
@@ -274,17 +281,12 @@ function renderTestimonials() {
     });
 }
 
-function submitReview() {
-    // Simplified logic
-    alert("Terima kasih! Ulasan Anda telah diposting.");
+window.submitReview = function() {
+    alert("Terima kasih! Ulasan Anda telah diposting (Simulasi).");
     document.getElementById('reviewFormContainer').style.display = 'none';
 }
 
-function loadLocalReviews() {
-    // Placeholder
-}
-
-// 10. ORDER & PAYMENT LOGIC (UPDATED FOR XENDIT SIMULATION)
+// 9. ORDER & PAYMENT LOGIC
 function initOrderPage() {
     const urlParams = new URLSearchParams(window.location.search);
     document.getElementById('orderService').value = urlParams.get('service') || '-';
@@ -299,23 +301,22 @@ window.submitOrder = function() {
     const pkg = document.getElementById('orderPackage').value;
     const price = document.getElementById('orderPrice').value;
 
-    if(!name || !phone) { alert("Data tidak lengkap!"); return; }
+    if(!name || !phone) { alert("Harap lengkapi Nama dan No WA!"); return; }
 
     const orderData = { name, phone, service, pkg, price };
     localStorage.setItem('currentOrder', JSON.stringify(orderData));
 
     // Simulate PDF generation & Redirect
-    alert("Invoice Generated! Redirecting to Payment...");
+    alert("Invoice Created! Redirecting to Payment...");
     setTimeout(() => { window.location.href = "payment.html"; }, 500);
 };
 
-// XENDIT DEMO RENDERER
 function renderOrderSummary() {
     const container = document.getElementById('paymentGatewayContainer');
     const data = JSON.parse(localStorage.getItem('currentOrder'));
     
     if(!data) {
-        container.innerHTML = '<p>No active order.</p>';
+        container.innerHTML = '<p style="text-align:center; color:#888;">Belum ada pesanan aktif. Silakan pilih layanan terlebih dahulu.</p><div style="text-align:center; margin-top:20px;"><a href="services.html" class="service-action-btn">LIHAT LAYANAN</a></div>';
         return;
     }
 
@@ -331,6 +332,7 @@ function renderOrderSummary() {
             ${siteData.currentLang === 'id' ? 'BAYAR VIA XENDIT (QRIS/PAYPAL)' : 'PAY VIA XENDIT (QRIS/PAYPAL)'}
         </button>
     `;
+    bindHoverEvents();
 }
 
 window.openXenditDemo = function(price) {
@@ -342,7 +344,7 @@ window.openXenditDemo = function(price) {
                 <span class="x-amount">${price}</span>
             </div>
             <div class="x-content">
-                <span class="x-label">VIRTUAL ACCOUNT (Not Available)</span>
+                <span class="x-label">VIRTUAL ACCOUNT (Demo)</span>
                 
                 <span class="x-label">QR CODE</span>
                 <div class="x-option hover-target" onclick="alert('Redirecting to QRIS...')">
@@ -359,10 +361,9 @@ window.openXenditDemo = function(price) {
             <div class="x-footer">
                 Powered by Xendit Payment Gateway (Demo Mode)
             </div>
-            <button onclick="closeLightboxOnly()" style="width:100%; padding:10px; background:#eee; border:none; color:#333; cursor:pointer;">CANCEL</button>
+            <button onclick="closeLightboxOnly()" style="width:100%; padding:15px; background:#f0f0f0; border:none; color:#333; cursor:pointer; font-weight:bold;">CANCEL TRANSACTION</button>
         </div>
     `;
     modal.innerHTML = html;
     modal.classList.add('show');
-}
 }

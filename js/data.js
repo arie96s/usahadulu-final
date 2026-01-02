@@ -1,11 +1,11 @@
 // js/data.js
 
 const appConfig = {
-    useLocalImages: false,
+    useLocalImages: false, // Set 'true' jika sudah punya file gambar di folder img/
     localPath: 'img/',
 };
 
-// --- 1. DATA STRUCTURE ---
+// --- DATA STRUCTURE ---
 const siteData = {
     currentLang: localStorage.getItem('usahadulu_lang') || 'id',
     
@@ -25,7 +25,7 @@ const siteData = {
             payment_title: "CHECKOUT & PEMBAYARAN",
             pay_gateway_btn: "BAYAR SEKARANG (XENDIT/QRIS)",
             
-            // --- COPYWRITING BARU (INDONESIA) ---
+            // ABOUT PAGE STORY
             about_desc: `
                 Assalamualaikum & Salam Kreatif.<br><br>
                 <strong>USAHADULU</strong> bukanlah agensi raksasa, melainkan sebuah ruang karya sederhana yang telah bernafas sejak tahun <strong>2013</strong>. Perjalanan ini dimulai dari kamar kost saat saya masih duduk di bangku kuliah, bereksperimen dengan desain visual di sela-sela tumpukan tugas kampus.<br><br>
@@ -60,7 +60,7 @@ const siteData = {
             payment_title: "CHECKOUT & PAYMENT",
             pay_gateway_btn: "PAY NOW (XENDIT/PAYPAL)",
             
-            // --- COPYWRITING BARU (ENGLISH) ---
+            // ABOUT PAGE STORY
             about_desc: `
                 Greetings & Welcome.<br><br>
                 <strong>USAHADULU</strong> isn't a massive corporate agency. It is a humble creative home that has been breathing since <strong>2013</strong>. This journey started back in my college dorm room, experimenting with visuals between piles of assignments.<br><br>
@@ -180,7 +180,7 @@ const siteData = {
         },
     ],
     
-    // INTEGRASI CASE STUDY DI SINI
+    // PORTFOLIO & CASE STUDY
     portfolio: [
         { 
             category: 'logo', 
@@ -218,7 +218,7 @@ const siteData = {
                 result: "Tiket presale sold out dalam 3 hari."
             } 
         },
-        { category: 'art', title: 'DARK ARTS ILLUSTRATION', fileName: 'dark_art.jpg', demoUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=60' },
+        { category: 'apparel', title: 'DARK ARTS ILLUSTRATION', fileName: 'dark_art.jpg', demoUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=500&q=60' },
         { category: 'logo', title: 'VINTAGE TYPOGRAPHY', fileName: 'logo_vintage.jpg', demoUrl: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=500&q=60' },
         { category: 'web', title: 'RETRO WAVE WEBSITE', fileName: 'web_retro.jpg', demoUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=60' },
         { category: 'video', title: 'URBAN VLOG INTRO', fileName: 'video_vlog.jpg', demoUrl: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=500&q=60' },
@@ -227,14 +227,13 @@ const siteData = {
         { category: 'video', title: 'ABSTRACT MOTION', fileName: 'video_abstract.jpg', demoUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=500&q=60' },
         { category: 'web', title: 'WEDDING INVITATION', fileName: 'web_wedding.jpg', demoUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=500&q=60' }
     ],
+    
     filters: ['logo', 'apparel', 'web', 'video', 'flyer'],
+    
     testimonials: [
         { name: "Doni Pratama", brand: "Iron Soul Band", quote: "Desain artwork untuk album band kami sakit banget! Detailnya gila, vibe dark-nya dapet banget." },
         { name: "Siska Wijaya", brand: "Cafe Senja Dumai", quote: "Pengerjaan logo dan daftar menu sangat cepat. Revisi dilayani dengan ramah sampai sesuai keinginan." },
         { name: "Rian Ardiansyah", brand: "Street Rebels", quote: "Sudah 3x order desain kaos di sini. Selalu puas sama hasilnya. Konsep metalnya orisinil." },
         { name: "Putri Anggraini", brand: "Wedding Client", quote: "Undangan digitalnya elegan dan smooth banget animasinya. Tamu-tamu pada suka!" }
-    ],
-    // Only keeping QRIS & Paypal for Xendit Sim
-    payments: [] 
+    ]
 };
-}

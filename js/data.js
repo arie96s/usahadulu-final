@@ -1,7 +1,3 @@
-{
-type: uploaded file
-fileName: data.js
-fullContent:
 // js/data.js
 
 const appConfig = {

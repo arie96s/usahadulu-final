@@ -1,7 +1,3 @@
-{
-type: uploaded file
-fileName: main.js
-fullContent:
 // js/main.js
 
 // 1. FUNGSI INISIALISASI

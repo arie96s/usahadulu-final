@@ -1,6 +1,5 @@
 // js/main.js
 
-// 1. FUNGSI INISIALISASI
 window.addEventListener('load', () => {
     // Hide Preloader
     const preloader = document.getElementById('preloader');
@@ -15,7 +14,6 @@ window.addEventListener('load', () => {
     updateLanguageUI();
     updateWALinks();
     
-    // Set tombol bahasa aktif
     const toggleBtn = document.getElementById('langToggle');
     if(toggleBtn) toggleBtn.setAttribute('data-lang', siteData.currentLang);
 
@@ -32,28 +30,23 @@ window.addEventListener('load', () => {
     });
 
     bindHoverEvents();
-    initDraggableWA(); // REVISI: Inisialisasi fitur drag WA
+    initDraggableWA(); // Pastikan fungsi ini dipanggil
     
-    // Render Halaman
     if (document.getElementById('dynamicServiceList')) renderServices();
     if (document.getElementById('faqContent')) renderFAQ();
     if (document.getElementById('portfolioGrid')) {
         renderPortfolio('all');
         renderFilters();
     }
-    if (document.getElementById('paymentGatewayContainer')) {
-        renderOrderSummary(); 
-    }
+    if (document.getElementById('paymentGatewayContainer')) renderOrderSummary(); 
     if (document.getElementById('testimonialGrid')) {
         renderTestimonials(); 
         setupReviewStars(); 
     }
-    if (document.getElementById('orderForm')) {
-        initOrderPage();
-    }
+    if (document.getElementById('orderForm')) initOrderPage();
 });
 
-// 2. LOGIC BAHASA
+// LOGIC BAHASA
 window.toggleLanguage = function() {
     siteData.currentLang = siteData.currentLang === 'id' ? 'en' : 'id';
     localStorage.setItem('usahadulu_lang', siteData.currentLang);
@@ -75,20 +68,18 @@ function updateLanguageUI() {
         const key = el.getAttribute('data-i18n');
         if (t[key]) el.innerHTML = t[key];
     });
-    // Khusus konten About yang panjang
     const aboutText = document.getElementById('aboutText');
     if(aboutText) aboutText.innerHTML = t.about_desc;
 }
 
-// 3. LOGIC WHATSAPP (UPDATE: Draggable Logic)
+// FIX: DRAGGABLE WA LOGIC (TOTAL REWRITE)
 function updateWALinks() {
     const floatBtn = document.getElementById('waFloatBtn');
     if(!floatBtn) return;
     const lang = siteData.currentLang;
     const phone = "6282283687565"; 
     const msg = encodeURIComponent(lang === 'id' ? "Halo Admin, saya ingin bertanya jasa desain." : "Hello, I want to ask about design services.");
-    
-    // Jangan set href langsung jika ingin mencegah klik saat drag
+    // Simpan link di data-href agar tidak tertrigger saat drag
     floatBtn.setAttribute('data-href', `https://wa.me/${phone}?text=${msg}`);
 }
 
@@ -97,79 +88,76 @@ function initDraggableWA() {
     if(!el) return;
 
     let isDragging = false;
-    let hasMoved = false; // Untuk membedakan klik vs drag
-    let startX, startY, initialLeft, initialTop;
+    let hasMoved = false;
+    let offsetX, offsetY;
 
-    // Fungsi untuk memulai drag (Mouse & Touch)
     const startDrag = (e) => {
+        // Hanya trigger klik kiri (mouse) atau touch
+        if (e.type === 'mousedown' && e.button !== 0) return;
+
         isDragging = true;
         hasMoved = false;
-        
-        // Ambil posisi awal pointer
+
         const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
         const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-        
-        startX = clientX;
-        startY = clientY;
-        
-        // Ambil posisi elemen saat ini
-        const rect = el.getBoundingClientRect();
-        initialLeft = rect.left;
-        initialTop = rect.top;
 
-        // Ubah style agar posisi absolut mengikuti koordinat, bukan bottom/right lagi
+        // Hitung posisi elemen saat ini
+        const rect = el.getBoundingClientRect();
+        
+        // Hitung selisih posisi mouse dengan pojok kiri atas elemen
+        offsetX = clientX - rect.left;
+        offsetY = clientY - rect.top;
+
+        // Ubah positioning dari fixed bottom/right menjadi top/left
         el.style.bottom = 'auto';
         el.style.right = 'auto';
-        el.style.left = initialLeft + 'px';
-        el.style.top = initialTop + 'px';
+        el.style.left = rect.left + 'px';
+        el.style.top = rect.top + 'px';
         el.style.cursor = 'grabbing';
     };
 
-    // Fungsi saat drag berlangsung
     const onDrag = (e) => {
         if (!isDragging) return;
-        e.preventDefault(); // Mencegah scroll layar di mobile
+        
+        // Mencegah scroll layar saat drag di HP
+        if(e.cancelable) e.preventDefault(); 
+        
         hasMoved = true;
 
         const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
         const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
 
-        const dx = clientX - startX;
-        const dy = clientY - startY;
-
-        el.style.left = (initialLeft + dx) + 'px';
-        el.style.top = (initialTop + dy) + 'px';
+        // Set posisi baru
+        el.style.left = (clientX - offsetX) + 'px';
+        el.style.top = (clientY - offsetY) + 'px';
     };
 
-    // Fungsi saat drag selesai
-    const endDrag = (e) => {
+    const endDrag = () => {
         if (!isDragging) return;
         isDragging = false;
         el.style.cursor = 'grab';
     };
 
-    // Event Listeners Mouse
+    // Event Listeners
     el.addEventListener('mousedown', startDrag);
     document.addEventListener('mousemove', onDrag);
     document.addEventListener('mouseup', endDrag);
 
-    // Event Listeners Touch (Mobile)
     el.addEventListener('touchstart', startDrag, { passive: false });
     document.addEventListener('touchmove', onDrag, { passive: false });
     document.addEventListener('touchend', endDrag);
 
-    // Klik Handler: Hanya buka link jika TIDAK sedang didrag
+    // Click Handler (Hanya buka link jika tidak didrag)
     el.addEventListener('click', (e) => {
-        if (hasMoved) {
-            e.preventDefault(); // Batalkan link jika user sedang menggeser
-        } else {
+        e.preventDefault();
+        if (!hasMoved) {
             const url = el.getAttribute('data-href');
             if(url) window.open(url, '_blank');
         }
     });
 }
 
-// 4. CUSTOM CURSOR (Diperbaiki CSS-nya, JS tetap sama)
+// CUSTOM CURSOR
 const cursor = document.getElementById('cursor');
 function bindHoverEvents() {
     if(!cursor) return;
@@ -179,49 +167,48 @@ function bindHoverEvents() {
         target.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
     });
 }
-
 document.addEventListener('mousemove', (e) => {
     if(cursor) {
-        // Karena transisi transform di CSS sudah dihapus, pergerakan ini akan realtime & mulus
         cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
     }
 });
 
-// 5. MENU NAVIGASI & ANIMASI LOGO (REVISI)
+// FIX: ANIMASI LOGO (VARIABLE SCOPE CORRECTION)
 const menuBtn = document.getElementById('menuBtn');
 const navOverlay = document.getElementById('navOverlay');
 const mainHeader = document.getElementById('mainHeader');
-const logoImg = document.getElementById('headerLogoImg');
 
 if(menuBtn) {
     menuBtn.addEventListener('click', () => {
+        // Toggle Kelas
         menuBtn.classList.toggle('active');
         navOverlay.classList.toggle('open');
         mainHeader.classList.toggle('menu-active');
         document.body.classList.toggle('no-scroll');
         
-        // REVISI: Logika Ganti Logo Smooth (Cross-fade effect)
+        // Definisi ulang variabel di dalam scope agar selalu dapat elemen
+        const logoImg = document.getElementById('headerLogoImg');
+        
         if (logoImg) {
             // 1. Fade Out
             logoImg.style.opacity = '0';
             
-            // 2. Ganti Source setelah durasi fade out (300ms sesuai CSS transition)
+            // 2. Tunggu 300ms (sesuai css transition) lalu ganti src
             setTimeout(() => {
+                // Cek apakah menu SEDANG terbuka atau tertutup
                 if (navOverlay.classList.contains('open')) {
-                    // Menu Buka: Ganti ke logo_web.png
                     logoImg.src = 'img/logo_web.png';
                 } else {
-                    // Menu Tutup: Kembali ke logo_ambigram.png
                     logoImg.src = 'img/logo_ambigram.png';
                 }
-                // 3. Fade In kembali
+                // 3. Fade In
                 logoImg.style.opacity = '1';
             }, 300);
         }
     });
 }
 
-// 6. RENDER SERVICES
+// RENDER SERVICES
 function renderServices() {
     const container = document.getElementById('dynamicServiceList');
     if(!container) return;
@@ -272,7 +259,7 @@ function renderFAQ() {
     });
 }
 
-// 7. PORTFOLIO & CASE STUDY
+// PORTFOLIO
 window.renderPortfolio = function(cat) {
     const grid = document.getElementById('portfolioGrid');
     if(!grid) return;
@@ -284,9 +271,7 @@ window.renderPortfolio = function(cat) {
     items.forEach(item => {
         const div = document.createElement('div');
         div.className = 'portfolio-item hover-target';
-        
         let imgSrc = appConfig.useLocalImages ? ('img/' + item.fileName) : item.demoUrl;
-        
         div.onclick = () => openCaseStudy(item, imgSrc);
         div.innerHTML = `<img src="${imgSrc}" loading="lazy"><div class="portfolio-tag">${item.category.toUpperCase()}</div>`;
         grid.appendChild(div);
@@ -306,37 +291,22 @@ function renderFilters() {
 function openCaseStudy(item, imgSrc) {
     const modal = document.getElementById('lightboxModal');
     if(!modal) return;
-    
-    const cs = item.caseStudy || { client: "-", problem: "Information not available.", solution: "-", result: "-" };
-    
+    const cs = item.caseStudy || { client: "-", problem: "-", solution: "-", result: "-" };
     const contentHtml = `
         <div class="modal-content case-study-content">
             <div class="close-modal hover-target" onclick="closeLightboxOnly()">×</div>
             <h2 class="modal-title">${item.title}</h2>
-            
             <div class="case-study-grid">
-                <div class="case-study-img">
-                    <img src="${imgSrc}" alt="${item.title}">
-                </div>
+                <div class="case-study-img"><img src="${imgSrc}" alt="${item.title}"></div>
                 <div class="case-study-details">
-                    <h3>CLIENT</h3>
-                    <p>${cs.client}</p>
-                    
-                    <h3>PROBLEM</h3>
-                    <p>${cs.problem}</p>
-                    
-                    <h3>SOLUTION</h3>
-                    <p>${cs.solution}</p>
-                    
-                    <h3>RESULT</h3>
-                    <p>${cs.result}</p>
-                    
-                    <a href="services.html" class="service-action-btn hover-target" style="margin-top:20px;">START SIMILAR PROJECT</a>
+                    <h3>CLIENT</h3><p>${cs.client}</p>
+                    <h3>PROBLEM</h3><p>${cs.problem}</p>
+                    <h3>SOLUTION</h3><p>${cs.solution}</p>
+                    <h3>RESULT</h3><p>${cs.result}</p>
+                    <a href="services.html" class="service-action-btn hover-target" style="margin-top:20px;">START PROJECT</a>
                 </div>
             </div>
-        </div>
-    `;
-    
+        </div>`;
     modal.innerHTML = contentHtml;
     modal.classList.add('show');
     bindHoverEvents();
@@ -347,7 +317,7 @@ window.closeLightboxOnly = function() {
     if(modal) modal.classList.remove('show');
 }
 
-// 8. REVIEW SYSTEM
+// REVIEW & ORDER
 function setupReviewStars() {
     const stars = document.querySelectorAll('.star-icon');
     stars.forEach(star => {
@@ -355,8 +325,7 @@ function setupReviewStars() {
             const val = parseInt(this.getAttribute('data-val'));
             stars.forEach(s => {
                 const sVal = parseInt(s.getAttribute('data-val'));
-                if (sVal <= val) s.classList.add('active');
-                else s.classList.remove('active');
+                if (sVal <= val) s.classList.add('active'); else s.classList.remove('active');
             });
             document.getElementById('reviewFormContainer').style.display = 'block';
         });
@@ -377,7 +346,6 @@ window.submitReview = function() {
     document.getElementById('reviewFormContainer').style.display = 'none';
 }
 
-// 9. ORDER & PAYMENT LOGIC
 function initOrderPage() {
     const urlParams = new URLSearchParams(window.location.search);
     document.getElementById('orderService').value = urlParams.get('service') || '-';
@@ -393,10 +361,8 @@ window.submitOrder = function() {
     const price = document.getElementById('orderPrice').value;
 
     if(!name || !phone) { alert("Harap lengkapi Nama dan No WA!"); return; }
-
     const orderData = { name, phone, service, pkg, price };
     localStorage.setItem('currentOrder', JSON.stringify(orderData));
-
     alert("Invoice Created! Redirecting to Payment...");
     setTimeout(() => { window.location.href = "payment.html"; }, 500);
 };
@@ -404,12 +370,10 @@ window.submitOrder = function() {
 function renderOrderSummary() {
     const container = document.getElementById('paymentGatewayContainer');
     const data = JSON.parse(localStorage.getItem('currentOrder'));
-    
     if(!data) {
-        container.innerHTML = '<p style="text-align:center; color:#888;">Belum ada pesanan aktif. Silakan pilih layanan terlebih dahulu.</p><div style="text-align:center; margin-top:20px;"><a href="services.html" class="service-action-btn">LIHAT LAYANAN</a></div>';
+        container.innerHTML = '<p style="text-align:center; color:#888;">Belum ada pesanan aktif.</p><div style="text-align:center; margin-top:20px;"><a href="services.html" class="service-action-btn">LIHAT LAYANAN</a></div>';
         return;
     }
-
     container.innerHTML = `
         <div class="summary-card">
             <h3 class="summary-title">RINGKASAN PESANAN</h3>
@@ -417,7 +381,6 @@ function renderOrderSummary() {
             <div class="summary-row"><span>Paket:</span> <strong>${data.service} (${data.pkg})</strong></div>
             <div class="summary-row total"><span>TOTAL:</span> <strong>${data.price}</strong></div>
         </div>
-        
         <button class="payment-gateway-trigger hover-target" onclick="openXenditDemo('${data.price}')">
             ${siteData.currentLang === 'id' ? 'BAYAR VIA XENDIT (QRIS/PAYPAL)' : 'PAY VIA XENDIT (QRIS/PAYPAL)'}
         </button>
@@ -429,31 +392,17 @@ window.openXenditDemo = function(price) {
     const modal = document.getElementById('lightboxModal');
     const html = `
         <div class="modal-content xendit-modal-body">
-            <div class="x-header">
-                <span class="x-logo">xendit</span>
-                <span class="x-amount">${price}</span>
-            </div>
+            <div class="x-header"><span class="x-logo">xendit</span><span class="x-amount">${price}</span></div>
             <div class="x-content">
                 <span class="x-label">VIRTUAL ACCOUNT (Demo)</span>
-                
                 <span class="x-label">QR CODE</span>
-                <div class="x-option hover-target" onclick="alert('Redirecting to QRIS...')">
-                    <div class="x-icon">QRIS</div>
-                    <div class="x-name">QRIS (GoPay, OVO, Dana)</div>
-                </div>
-                
+                <div class="x-option hover-target" onclick="alert('Redirecting to QRIS...')"><div class="x-icon">QRIS</div><div class="x-name">QRIS (GoPay, OVO)</div></div>
                 <span class="x-label">E-WALLET / GLOBAL</span>
-                <div class="x-option hover-target" onclick="alert('Redirecting to PayPal...')">
-                    <div class="x-icon">PP</div>
-                    <div class="x-name">PayPal International</div>
-                </div>
+                <div class="x-option hover-target" onclick="alert('Redirecting to PayPal...')"><div class="x-icon">PP</div><div class="x-name">PayPal International</div></div>
             </div>
-            <div class="x-footer">
-                Powered by Xendit Payment Gateway (Demo Mode)
-            </div>
-            <button onclick="closeLightboxOnly()" style="width:100%; padding:15px; background:#f0f0f0; border:none; color:#333; cursor:pointer; font-weight:bold;">CANCEL TRANSACTION</button>
-        </div>
-    `;
+            <div class="x-footer">Powered by Xendit Payment Gateway (Demo Mode)</div>
+            <button onclick="closeLightboxOnly()" style="width:100%; padding:15px; background:#f0f0f0; border:none; cursor:pointer; font-weight:bold;">CANCEL</button>
+        </div>`;
     modal.innerHTML = html;
     modal.classList.add('show');
 }
